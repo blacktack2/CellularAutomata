@@ -13,9 +13,15 @@ public:
 
 	void mainloop();
 
-	inline bool hasInitialized() { return mInitSuccess; }
+	inline bool hasInitialized() {
+		return mInitSuccess;
+	}
 private:
 	void handleEvent(SDL_Event& e);
+
+	void drawDebugPanel();
+	void drawIOPanel();
+	void drawSimPanel();
 
 	SDL_Window* mWindow = nullptr;
 	SDL_GLContext mGLContext{};

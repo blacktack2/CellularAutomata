@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include "Timer.h"
+
 #include "glad/glad.h"
 
 #include "../imgui/imgui_impl_opengl3.h"
@@ -37,7 +39,7 @@ mWidth(width), mHeight(height) {
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
 		return;
 
-	glClearColor(0.0f, 0.0f, 0.0f, 0.1f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glViewport(0, 0, mWidth, mHeight);
 
 	IMGUI_CHECKVERSION();
@@ -68,22 +70,9 @@ Window::~Window() {
 void Window::mainloop() {
 	SDL_Event e;
 
-	float mspf = 1.0f;
-	float delta = 0.0f;
-	auto lastTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	int frameCounter = 0;
-
 	mRunning = true;
 	while (mRunning) {
-		auto currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-		delta += (float)(currentTime - lastTime);
-		lastTime = currentTime;
-		frameCounter++;
-		if (delta > 1000.0f) {
-			mspf = delta / (float)frameCounter;
-			delta = 0.0f;
-			frameCounter = 0;
-		}
+		float dt = Timer::getTimer().getFrameDelta().count();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -97,8 +86,51 @@ void Window::mainloop() {
 			ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 			ImGui::SetNextWindowSize(ImVec2((float)mWidth, (float)mHeight), ImGuiCond_Always);
 			ImGui::Begin("##Root", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+			ImVec2 bounds;
+			float w, h;
 
-			ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), std::string("FPS: ").append(std::to_string(1000.0f / mspf)).append(" | ").append(std::to_string(mspf)).append("ms").c_str());
+			ImGui::BeginGroup();
+
+			bounds = ImGui::GetContentRegionAvail();
+			w = bounds.x * (2.0f / 7.0f);
+			h = (bounds.y - 30.0f) * 0.5;
+			ImGui::BeginChild("Debug", ImVec2(w, h), true);
+
+			drawDebugPanel();
+
+			ImGui::EndChild();
+
+			h = ImGui::GetContentRegionAvail().y - 30.0f;
+			ImGui::BeginChild("Config", ImVec2(w, h), true);
+
+			drawIOPanel();
+
+			ImGui::EndChild();
+
+			ImGui::EndGroup();
+			ImGui::SameLine();
+			ImGui::BeginGroup();
+
+			bounds = ImGui::GetContentRegionAvail();
+			w = bounds.x;
+			h = bounds.y - 30.0f;
+			ImGui::BeginChild("Simulation", ImVec2(w, h), true);
+
+			drawSimPanel();
+
+			ImGui::EndChild();
+
+			ImGui::EndGroup();
+			ImGui::BeginGroup();
+
+			bounds = ImGui::GetContentRegionAvail();
+			w = bounds.x;
+			h = bounds.y;
+			ImGui::BeginChild("Message", ImVec2(w, h), true);
+
+			ImGui::EndChild();
+
+			ImGui::EndGroup();
 
 			ImGui::End();
 		}
@@ -134,4 +166,18 @@ void Window::handleEvent(SDL_Event& e) {
 			}
 			break;
 	}
+}
+
+void Window::drawDebugPanel() {
+	ImGui::TextColored(
+		ImVec4(1.0f, 1.0f, 0.0f, 1.0f),
+		"[FPS: %.2f | %.2fms]",
+		Timer::getTimer().getFPS(), Timer::getTimer().getMS()
+	);
+}
+
+void Window::drawIOPanel() {
+}
+
+void Window::drawSimPanel() {
 }
