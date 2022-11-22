@@ -1,4 +1,4 @@
-#include "../imgui/imgui.h"
+#include "imgui/imgui.h"
 
 #ifdef WIN32
 #include <SDL.h>

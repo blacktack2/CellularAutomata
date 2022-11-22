@@ -4,9 +4,9 @@
 
 #include "glad/glad.h"
 
-#include "../imgui/imgui_impl_opengl3.h"
-#include "../imgui/imgui_impl_sdl.h"
-#include "../imgui/imgui_stdlib.h"
+#include "imgui/imgui_impl_opengl3.h"
+#include "imgui/imgui_impl_sdl.h"
+#include "imgui/imgui_stdlib.h"
 
 #include <chrono>
 #include <string>
