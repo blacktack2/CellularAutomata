@@ -1,6 +1,8 @@
 #include "Window.h"
 
+#include "LLCA2DRenderer.h"
 #include "Timer.h"
+#include "../Simulation/GLUtils.h"
 
 #include "glad/glad.h"
 
@@ -51,17 +53,37 @@ mWidth(width), mHeight(height) {
 	ImGui_ImplSDL2_InitForOpenGL(mWindow, mGLContext);
 	ImGui_ImplOpenGL3_Init("#version 460 core");
 
+	glGenTextures(1, &mSimTexture);
+	glBindTexture(GL_TEXTURE_2D, mSimTexture);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mSimArea.x, mSimArea.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+#ifdef _DEBUG
+	glCheckError();
+#endif
+
+	mRenderer = new LLCA2DRenderer(*this, mSimTexture);
+
 	mInitSuccess = true;
 }
 
 Window::~Window() {
+	if (mRenderer)
+		delete mRenderer;
+
+	glDeleteTextures(1, &mSimTexture);
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
 	SDL_GL_DeleteContext(mGLContext);
 
-	if (mWindow != nullptr)
+	if (mWindow)
 		SDL_DestroyWindow(mWindow);
 
 	SDL_Quit();
@@ -96,14 +118,14 @@ void Window::mainloop() {
 			h = (bounds.y - 30.0f) * 0.5;
 			ImGui::BeginChild("Debug", ImVec2(w, h), true);
 
-			drawDebugPanel();
+			drawDebugPanel(dt);
 
 			ImGui::EndChild();
 
 			h = ImGui::GetContentRegionAvail().y - 30.0f;
 			ImGui::BeginChild("Config", ImVec2(w, h), true);
 
-			drawIOPanel();
+			drawIOPanel(dt);
 
 			ImGui::EndChild();
 
@@ -116,7 +138,7 @@ void Window::mainloop() {
 			h = bounds.y - 30.0f;
 			ImGui::BeginChild("Simulation", ImVec2(w, h), true);
 
-			drawSimPanel();
+			drawSimPanel(dt);
 
 			ImGui::EndChild();
 
@@ -163,12 +185,18 @@ void Window::handleEvent(SDL_Event& e) {
 				case SDLK_ESCAPE:
 					mRunning = false;
 					break;
+				case SDLK_SPACE:
+					mRunSimulation = !mRunSimulation;
+					break;
+				case SDLK_r:
+					mRenderer->getSimulator().reset();
+					break;
 			}
 			break;
 	}
 }
 
-void Window::drawDebugPanel() {
+void Window::drawDebugPanel(float dt) {
 	ImGui::TextColored(
 		ImVec4(1.0f, 1.0f, 0.0f, 1.0f),
 		"[FPS: %.2f | %.2fms]",
@@ -176,8 +204,46 @@ void Window::drawDebugPanel() {
 	);
 }
 
-void Window::drawIOPanel() {
+void Window::drawIOPanel(float dt) {
+	ImGui::PushItemWidth(-FLT_MIN);
+
+	mRunSimulation ^= ImGui::Button(mRunSimulation ? "Stop Simulation" : "Start Simulation", ImVec2(-FLT_MIN, 0));
+
+	if (ImGui::Button("Reset", ImVec2(-FLT_MIN, 0)))
+		mRenderer->getSimulator().reset();
+
+	ImGui::Text("Iteration Delay");
+	ImGui::DragFloat("##IterationDelay", &mIterationDelay, 10.0f, 0.0f, 2000.0f, "%.0f ms");
+
+	mRenderer->drawParameters();
+
+	ImGui::PopItemWidth();
 }
 
-void Window::drawSimPanel() {
+void Window::drawSimPanel(float dt) {
+	static float delta = 0;
+	if (mRunSimulation) {
+		delta += dt;
+		if (delta > mIterationDelay) {
+			delta -= mIterationDelay;
+			mRenderer->update();
+		}
+	}
+
+	ImVec2 simArea = ImGui::GetContentRegionAvail();
+	if (simArea.x != mSimArea.x || simArea.y != mSimArea.y) {
+		mSimArea = simArea;
+		glBindTexture(GL_TEXTURE_2D, mSimTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mSimArea.x, mSimArea.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+		glBindTexture(GL_TEXTURE_2D, 0);
+#ifdef _DEBUG
+		glCheckError();
+#endif
+	}
+
+	glViewport(0, 0, mSimArea.x, mSimArea.y);
+	mRenderer->draw();
+	glViewport(0, 0, mWidth, mHeight);
+
+	ImGui::Image((ImTextureID)(uintptr_t)mSimTexture, mSimArea);
 }

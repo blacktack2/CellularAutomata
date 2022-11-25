@@ -1,4 +1,4 @@
-﻿#include "Window.h"
+﻿#include "Window/Window.h"
 
 int main(int argc, char* argv[]) {
 	Window w = Window("Cellular Automata", 800, 600);

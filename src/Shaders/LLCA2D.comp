@@ -1,0 +1,85 @@
+R"(#version 460 core
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+
+const uint MAX_SIZE = 2000;
+const uint MAX_CELLS = MAX_SIZE * MAX_SIZE;
+
+layout(std430, binding = 1) buffer CellInBuffer {
+	uint cellsIn[MAX_CELLS];
+};
+
+layout(std430, binding = 2) buffer CellOutBuffer {
+	uint cellsOut[MAX_CELLS];
+};
+
+uniform uint birthRules;
+uniform uint deathRules;
+uniform uvec2 simulationBounds = uvec2(100, 100);
+uniform uint numGenerations = 1;
+
+uniform uint edgeMode = 0;
+
+uint readCell(uvec2 at) {
+	return cellsIn[at.x + at.y * MAX_SIZE];
+}
+void writeCell(uvec2 at, uint cell) {
+	cellsOut[at.x + at.y * MAX_SIZE] = cell;
+}
+
+uint readCellNeighbourClamp(uvec2 at, ivec2 offset) {
+	return readCell(at +
+		ivec2(
+			at.x == 0 && offset.x == -1 ? 0 : (at.x == simulationBounds.x - 1 && offset.x == 1 ? 0 : offset.x),
+			at.y == 0 && offset.y == -1 ? 0 : (at.y == simulationBounds.y - 1 && offset.y == 1 ? 0 : offset.y)
+		)) == numGenerations ? 1 : 0;
+}
+uint readCellNeighbourWrap(uvec2 at, ivec2 offset) {
+	return readCell(uvec2(
+		(at.x == 0 && offset.x == -1) ? simulationBounds.x - 1 :
+			((at.x == simulationBounds.x - 1 && offset.x == 1) ? 0 : at.x + offset.x),
+		(at.y == 0 && offset.y == -1) ? simulationBounds.y - 1 :
+			((at.y == simulationBounds.y - 1 && offset.y == 1) ? 0 : at.y + offset.y)
+	)) == numGenerations ? 1 : 0;
+}
+uint readCellNeighbourDead(uvec2 at, ivec2 offset) {
+	return (at.x == 0 && offset.x == -1 || at.x == simulationBounds.x - 1 && offset.x == 1 ||
+		at.y == 0 && offset.y == -1 || at.y == simulationBounds.y - 1 && offset.y == 1) ?
+			0 : (readCell(at + offset) == numGenerations ? 1 : 0);
+}
+uint readCellNeighbourAlive(uvec2 at, ivec2 offset) {
+	return (at.x == 0 && offset.x == -1 || at.x == simulationBounds.x - 1 && offset.x == 1 ||
+		at.y == 0 && offset.y == -1 || at.y == simulationBounds.y - 1 && offset.y == 1) ?
+			numGenerations : (readCell(at + offset) == numGenerations ? 1 : 0);
+}
+
+#define calcNeighbours(var, func, pos)\
+var =\
+	func(pos, ivec2( 1,  1)) +\
+	func(pos, ivec2( 1,  0)) +\
+	func(pos, ivec2( 1, -1)) +\
+	func(pos, ivec2( 0,  1)) +\
+	func(pos, ivec2( 0, -1)) +\
+	func(pos, ivec2(-1,  1)) +\
+	func(pos, ivec2(-1,  0)) +\
+	func(pos, ivec2(-1, -1));
+
+void main() {
+	uvec2 id = gl_GlobalInvocationID.xy;
+
+	uint numNeighbours;
+	if (edgeMode == 0) {
+		calcNeighbours(numNeighbours, readCellNeighbourClamp, id);
+	} else if (edgeMode == 1) {
+		calcNeighbours(numNeighbours, readCellNeighbourWrap, id);
+	} else if (edgeMode == 2) {
+		calcNeighbours(numNeighbours, readCellNeighbourDead, id);
+	} else if (edgeMode == 3) {
+		calcNeighbours(numNeighbours, readCellNeighbourAlive, id);
+	} else {
+		numNeighbours = 0;
+	}
+
+	uint cell = readCell(id);
+	writeCell(id, cell == 0 ? ((birthRules & (1 << numNeighbours)) != 0 ? numGenerations : cell) : (((cell != numGenerations) || (deathRules & (1 << numNeighbours)) != 0) ? cell - 1 : cell));
+}
+)"

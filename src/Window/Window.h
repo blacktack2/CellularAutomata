@@ -1,3 +1,6 @@
+#pragma once
+#include "Renderer.h"
+
 #include "imgui/imgui.h"
 
 #ifdef WIN32
@@ -19,17 +22,26 @@ public:
 private:
 	void handleEvent(SDL_Event& e);
 
-	void drawDebugPanel();
-	void drawIOPanel();
-	void drawSimPanel();
+	void drawDebugPanel(float dt);
+	void drawIOPanel(float dt);
+	void drawSimPanel(float dt);
 
 	SDL_Window* mWindow = nullptr;
 	SDL_GLContext mGLContext{};
 	ImGuiIO mIo;
+
+	Renderer* mRenderer = nullptr;
+
+	GLuint mSimTexture;
+
+	ImVec2 mSimArea = ImVec2(100, 100);
 
 	int mWidth;
 	int mHeight;
 
 	bool mRunning = false;
 	bool mInitSuccess = false;
+
+	bool mRunSimulation = false;
+	float mIterationDelay = 0;
 };
