@@ -24,10 +24,10 @@ private:
     };
 
     void bufferData();
-    void uploadAttribute(VBOIndex attribIndex, GLuint numElements, GLsizei dataTypeSize, GLuint attribSize, const void* data, const char* debugName);
+    void uploadAttribute(VBOIndex vboIndex, GLuint numElements, GLsizei dataTypeSize, GLint attribSize, const void* data, const char* debugName);
 
     GLuint mArrayObject = 0;
-    GLuint mVBOs[(size_t)VBOIndex::MAX];
+    GLuint mVBOs[(size_t)VBOIndex::MAX]{};
 
     GLuint mType = GL_TRIANGLES;
     GLuint mNumVertices = 0;

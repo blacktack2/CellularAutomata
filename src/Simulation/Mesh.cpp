@@ -52,14 +52,14 @@ void Mesh::bufferData() {
     glBindVertexArray(0);
 }
 
-void Mesh::uploadAttribute(VBOIndex index, GLuint numElements, GLsizei size, GLuint attribSize, const void* data, const char* debugName) {
-    GLuint id = mVBOs[(size_t)index];
+void Mesh::uploadAttribute(VBOIndex vboIndex, GLuint numElements, GLsizei dataTypeSize, GLint attribSize, const void* data, const char* debugName) {
+    GLuint& id = mVBOs[(size_t)vboIndex];
     glGenBuffers(1, &id);
     glBindBuffer(GL_ARRAY_BUFFER, id);
-    glBufferData(GL_ARRAY_BUFFER, numElements * size, data, GL_STATIC_DRAW);
 
-    glVertexAttribPointer((GLuint)index, attribSize, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray((GLuint)index);
+    glBufferData(GL_ARRAY_BUFFER, numElements * dataTypeSize, data, GL_STATIC_DRAW);
+    glVertexAttribPointer((GLuint)vboIndex, attribSize, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray((GLuint)vboIndex);
 
     glObjectLabel(GL_BUFFER, id, -1, debugName);
 
