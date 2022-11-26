@@ -42,6 +42,11 @@ private:
 	bool mRunning = false;
 	bool mInitSuccess = false;
 
+	bool mVsync = false;
+	bool mAdaptiveVsync = false;
+	bool mAllowVsync = false;
+	bool mAllowAdaptiveVsync = false;
+
 	bool mRunSimulation = false;
 	float mIterationDelay = 0;
 };

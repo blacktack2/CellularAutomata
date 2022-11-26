@@ -36,7 +36,10 @@ mWidth(width), mHeight(height) {
 	SDL_SetWindowMinimumSize(mWindow, 800, 600);
 	mGLContext = SDL_GL_CreateContext(mWindow);
 
-	SDL_GL_SetSwapInterval(1);
+    mAllowVsync = !SDL_GL_SetSwapInterval(1);
+    if (mAllowVsync)
+	    mAllowAdaptiveVsync = !SDL_GL_SetSwapInterval(-1);
+	SDL_GL_SetSwapInterval((mVsync = mAllowVsync) ? ((mAdaptiveVsync = mAllowAdaptiveVsync) ? -1 : 1) : 0);
 
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
 		return;
@@ -72,8 +75,7 @@ mWidth(width), mHeight(height) {
 }
 
 Window::~Window() {
-	if (mRenderer)
-		delete mRenderer;
+    delete mRenderer;
 
 	glDeleteTextures(1, &mSimTexture);
 
@@ -115,7 +117,7 @@ void Window::mainloop() {
 
 			bounds = ImGui::GetContentRegionAvail();
 			w = bounds.x * (2.0f / 7.0f);
-			h = (bounds.y - 30.0f) * 0.5;
+			h = (bounds.y - 30.0f) * 0.2;
 			ImGui::BeginChild("Debug", ImVec2(w, h), true);
 
 			drawDebugPanel(dt);
@@ -202,6 +204,17 @@ void Window::drawDebugPanel(float dt) {
 		"[FPS: %.2f | %.2fms]",
 		Timer::getTimer().getFPS(), Timer::getTimer().getMS()
 	);
+
+	if (mAllowVsync) {
+	    if (ImGui::Checkbox("Vsync", &mVsync))
+            SDL_GL_SetSwapInterval(mVsync ? (mAdaptiveVsync ? -1 : 1) : 0);
+	    if (mAllowAdaptiveVsync) {
+	        ImGui::BeginDisabled(!mVsync);
+	        if (ImGui::Checkbox("Adaptive Vsync", &mAdaptiveVsync))
+                SDL_GL_SetSwapInterval(mVsync ? (mAdaptiveVsync ? -1 : 1) : 0);
+	        ImGui::EndDisabled();
+	    }
+	}
 }
 
 void Window::drawIOPanel(float dt) {
