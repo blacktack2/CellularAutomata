@@ -6,7 +6,7 @@
 
 #include <random>
 
-const size_t MAX_SIZE = 2000;
+const size_t MAX_SIZE = 1000;
 const size_t MAX_CELLS = MAX_SIZE * MAX_SIZE;
 
 typedef unsigned int cell;

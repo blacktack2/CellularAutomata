@@ -1,6 +1,6 @@
 R"(#version 460 core
 
-const uint MAX_SIZE = 2000;
+const uint MAX_SIZE = 1000;
 const uint MAX_CELLS = MAX_SIZE * MAX_SIZE;
 
 layout(std430, binding = 2) buffer CellOutBuffer {
