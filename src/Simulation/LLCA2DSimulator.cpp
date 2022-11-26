@@ -32,15 +32,22 @@ LLCA2DSimulator::LLCA2DSimulator() : Simulator(), mIterationCompute(&iterationCo
 	mCellsBufferA = createBuffer(mCells, sizeof(mCells), 1);
 	mCellsBufferB = createBuffer(mCells, sizeof(mCells), 2);
 
-	reset();
+	LLCA2DSimulator::reset();
 }
 
 LLCA2DSimulator::~LLCA2DSimulator() {
 }
 
 void LLCA2DSimulator::reset() {
-	for (auto& c : mCells)
-		c = mRandBool(mMT) ? mNumGenerations : 0;
+    clearCells();
+    switch (mInitMode) {
+        default: case InitMode::MAX: break;
+        case InitMode::RANDOM: fillCellsRandom(); break;
+        case InitMode::SINGLE: fillCells1(); break;
+        case InitMode::LINEH: fillCellsLineH(); break;
+        case InitMode::LINEV: fillCellsLineV(); break;
+        case InitMode::CROSS: fillCellsCross(); break;
+    }
 	writeBuffer(mCellsBufferA, mCells, sizeof(mCells));
 	writeBuffer(mCellsBufferB, mCells, sizeof(mCells));
 }
@@ -56,4 +63,36 @@ void LLCA2DSimulator::updateGenerations(cell newGen, cell oldGen) {
 		c = c == oldGen ? newGen : c;
 	writeBuffer(mCellsBufferA, mCells, sizeof(mCells));
 	writeBuffer(mCellsBufferB, mCells, sizeof(mCells));
+}
+
+void LLCA2DSimulator::clearCells() {
+    for (auto& c : mCells)
+        c = 0;
+}
+
+void LLCA2DSimulator::fillCellsRandom() {
+    for (size_t x = 0; x < mBounds.x; x++)
+        for (size_t y = 0; y < mBounds.y; y++)
+            mCells[x + y * MAX_SIZE] = mRandBool(mMT) ? mNumGenerations : 0;
+}
+
+void LLCA2DSimulator::fillCells1() {
+    mCells[(size_t)(mBounds.x * 0.5f + mBounds.y * 0.5f * MAX_SIZE)] = mNumGenerations;
+}
+
+void LLCA2DSimulator::fillCellsLineH() {
+    for (size_t x = 0; x < mBounds.x; x++)
+        mCells[x + (size_t)(mBounds.y * 0.5f * MAX_SIZE)] = mNumGenerations;
+}
+
+void LLCA2DSimulator::fillCellsLineV() {
+    for (size_t y = 0; y < mBounds.y; y++)
+        mCells[(size_t)(mBounds.x * 0.5f) + y * MAX_SIZE] = mNumGenerations;
+}
+
+void LLCA2DSimulator::fillCellsCross() {
+    for (size_t x = 0; x < mBounds.x; x++)
+        mCells[x + (size_t)(mBounds.y * 0.5f * MAX_SIZE)] = mNumGenerations;
+    for (size_t y = 0; y < mBounds.y; y++)
+        mCells[(size_t)(mBounds.x * 0.5f) + y * MAX_SIZE] = mNumGenerations;
 }

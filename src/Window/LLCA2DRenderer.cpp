@@ -48,6 +48,13 @@ void LLCA2DRenderer::drawParameters() {
 		mShader.unbind();
 	}
 
+    ImGui::Text("Init Mode");
+    const char* INIT_MODE_NAMES[]{ "Random", "Single", "Horizontal", "Vertical", "Cross" };
+    InitMode initMode = mSimulator.getInitMode();
+    if (ImGui::Combo("##InitMode", (int*)&initMode, INIT_MODE_NAMES, (int)InitMode::MAX)) {
+        mSimulator.setInitMode(initMode);
+    }
+
 	ImGui::Text("Edge Mode");
 	const char* EDGE_MODE_NAMES[]{ "Clamp", "Wrap", "Dead", "Live" };
 	EdgeMode edgeMode = mSimulator.getEdgeMode();

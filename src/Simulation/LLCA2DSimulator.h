@@ -20,6 +20,15 @@ enum class EdgeMode {
 	MAX
 };
 
+enum class InitMode {
+    RANDOM,
+    SINGLE,
+    LINEH,
+    LINEV,
+    CROSS,
+    MAX
+};
+
 // 2D Lifelike Cellular Automata
 class LLCA2DSimulator : public Simulator {
 public:
@@ -29,7 +38,7 @@ public:
 	virtual void reset() override;
 	virtual void iterate() override;
 
-	inline ruleset getBirthRules() {
+	[[nodiscard]] inline ruleset getBirthRules() const {
 		return mBirthRules;
 	}
 	inline void setBirthRules(ruleset birthRules) {
@@ -39,7 +48,7 @@ public:
 		mIterationCompute.unbind();
 	}
 
-	inline ruleset getDeathRules() {
+	[[nodiscard]] inline ruleset getDeathRules() const {
 		return mDeathRules;
 	}
 	inline void setDeathRules(ruleset deathRules) {
@@ -49,7 +58,7 @@ public:
 		mIterationCompute.unbind();
 	}
 
-	inline glm::uvec2 getBounds() {
+	[[nodiscard]] inline glm::uvec2 getBounds() const {
 		return mBounds;
 	}
 	inline void setBounds(glm::uvec2 bounds) {
@@ -59,7 +68,7 @@ public:
 		mIterationCompute.unbind();
 	}
 
-	inline cell getNumGenerations() {
+	[[nodiscard]] inline cell getNumGenerations() const {
 		return mNumGenerations;
 	}
 	inline void setNumGenerations(cell numGenerations) {
@@ -70,7 +79,7 @@ public:
 		mIterationCompute.unbind();
 	}
 
-	inline EdgeMode getEdgeMode() {
+	[[nodiscard]] inline EdgeMode getEdgeMode() const {
 		return mEdgeMode;
 	}
 	inline void setEdgeMode(EdgeMode edgeMode) {
@@ -79,17 +88,32 @@ public:
 		glUniform1ui(mEdgeModeUniform, (unsigned int)mEdgeMode);
 		mIterationCompute.unbind();
 	}
+
+	[[nodiscard]] inline InitMode getInitMode() const {
+	    return mInitMode;
+	}
+	inline void setInitMode(InitMode initMode) {
+	    mInitMode = initMode;
+	}
 private:
 	void updateGenerations(cell newGen, cell oldGen);
 
+	void clearCells();
+	void fillCellsRandom();
+	void fillCells1();
+	void fillCellsLineH();
+	void fillCellsLineV();
+	void fillCellsCross();
+
 	ComputeShader mIterationCompute;
 
-	ruleset mBirthRules = 1 << 3;
-	ruleset mDeathRules = ~(1 << 2 | 1 << 3) & ((1 << 10) - 1);
+	ruleset mBirthRules = 1u << 3u;
+	ruleset mDeathRules = ~(1u << 2u | 1u << 3u) & ((1u << 10u) - 1u);
 	glm::uvec2 mBounds = glm::uvec2(100u, 100u);
 	cell mNumGenerations = 1u;
 
 	EdgeMode mEdgeMode = EdgeMode::WRAP;
+	InitMode mInitMode = InitMode::RANDOM;
 
 	GLuint mBirthRulesUniform;
 	GLuint mDeathRulesUniform;
