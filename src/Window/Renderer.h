@@ -1,4 +1,5 @@
 #pragma once
+#include "../Simulation/Mesh.h"
 #include "../Simulation/Simulator.h"
 
 #include <glad/glad.h>
@@ -31,10 +32,5 @@ private:
 	GLuint mFBO;
 	GLuint& mTexture;
 
-	GLuint mQuadArrayObject;
-	GLuint mQuadVBO;
-
-	glm::vec2* mQuadVertices = new glm::vec2[4]{
-		glm::vec2(-1.0f, -1.0f), glm::vec2(1.0f, -1.0f), glm::vec2(-1.0f, 1.0f), glm::vec2(1.0f, 1.0f)
-	};
+	Mesh* mScreenQuad = Mesh::getScreenQuad();
 };

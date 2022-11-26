@@ -19,24 +19,11 @@ mWindow(window), mSimulator(simulator), mTexture(texture) {
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	glGenVertexArrays(1, &mQuadArrayObject);
-	glBindVertexArray(mQuadArrayObject);
-
-	glGenBuffers(1, &mQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(glm::vec2), mQuadVertices, GL_STATIC_DRAW);
-
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-	glEnableVertexAttribArray(0);
-
 	glBindVertexArray(0);
 }
 
 Renderer::~Renderer() {
 	glDeleteFramebuffers(1, &mFBO);
-	glDeleteVertexArrays(1, &mQuadArrayObject);
-
-	delete[] mQuadVertices;
 }
 
 void Renderer::update() {
@@ -51,10 +38,7 @@ void Renderer::drawQuad() {
 	glBindFramebuffer(GL_FRAMEBUFFER, mFBO);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glBindVertexArray(mQuadVBO);
+	mScreenQuad->draw();
 
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	glBindVertexArray(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
