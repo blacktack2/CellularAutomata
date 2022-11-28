@@ -25,8 +25,8 @@ mSimulator(), Renderer(window, mSimulator, texture), mShader(&shaderVertexCode, 
 	glUniform2uiv(mSimBoundsUniform, 1, &mSimulator.getBounds()[0]);
 	glUniform1f(mInvNumGenerationsUniform, 1.0f / mSimulator.getNumGenerations());
 
-	glUniform3fv(mLiveColUniform, 1, &mCurrentLiveColor[0]);
-	glUniform3fv(mDeadColUniform, 1, &mCurrentDeadColor[0]);
+	glUniform3fv(mLiveColUniform, 1, &mLiveColour[0]);
+	glUniform3fv(mDeadColUniform, 1, &mDeadColour[0]);
 
 	mShader.unbind();
 }
@@ -42,10 +42,7 @@ void LLCA2DRenderer::drawParameters() {
 	ImGui::Text("Simulation Bounds");
 	glm::uvec2 simBounds = mSimulator.getBounds();
 	if (ImGui::DragInt2("##bounds", (int*)&simBounds[0], 10, 2, MAX_SIZE)) {
-		mSimulator.setBounds(simBounds);
-		mShader.bind();
-		glUniform2uiv(mSimBoundsUniform, 1, &simBounds[0]);
-		mShader.unbind();
+		setBounds(simBounds);
 	}
 
     ImGui::Text("Init Mode");
@@ -63,24 +60,20 @@ void LLCA2DRenderer::drawParameters() {
 	}
 
 	ImGui::Text("Live Colour");
-	if (ImGui::ColorEdit3("##LiveColour", (float*)&mCurrentLiveColor[0])) {
-		mShader.bind();
-		glUniform3fv(mLiveColUniform, 1, &mCurrentLiveColor[0]);
-		mShader.unbind();
+	if (ImGui::ColorEdit3("##LiveColour", (float*)&mLiveColour[0])) {
+		setLiveColour(mLiveColour);
 	}
 
 	ImGui::Text("Dead Colour");
-	if (ImGui::ColorEdit3("##DeadColour", (float*)&mCurrentDeadColor[0])) {
-		mShader.bind();
-		glUniform3fv(mDeadColUniform, 1, &mCurrentDeadColor[0]);
-		mShader.unbind();
+	if (ImGui::ColorEdit3("##DeadColour", (float*)&mDeadColour[0])) {
+		setDeadColour(mDeadColour);
 	}
 
 	ImGui::Separator();
 
 	float ruleBoxWidth = std::floor(bounds.x * (1.0f / 9.0f));
-	ImVec4 liveColor = ImVec4(mCurrentLiveColor.r, mCurrentLiveColor.g, mCurrentLiveColor.b, 1.0f);
-	ImVec4 deadColor = ImVec4(mCurrentDeadColor.r, mCurrentDeadColor.g, mCurrentDeadColor.b, 1.0f);
+	ImVec4 liveColor = ImVec4(mLiveColour.r, mLiveColour.g, mLiveColour.b, 1.0f);
+	ImVec4 deadColor = ImVec4(mDeadColour.r, mDeadColour.g, mDeadColour.b, 1.0f);
 
 	ImGui::Text("Birth Rules");
 	if (ImGui::IsItemHovered())
@@ -133,12 +126,8 @@ void LLCA2DRenderer::drawParameters() {
 		mSimulator.setDeathRules(newDeathRules);
 
 	cell numGenerations = mSimulator.getNumGenerations();
-	if (ImGui::DragInt("##NumGenerations", (int*)&numGenerations, 1, 1, 1000)) {
-		mSimulator.setNumGenerations(numGenerations);
-		mShader.bind();
-		glUniform1f(mInvNumGenerationsUniform, 1.0f / numGenerations);
-		mShader.unbind();
-	}
+	if (ImGui::DragInt("##NumGenerations", (int*)&numGenerations, 1, 1, 1000))
+		setNumGenerations(numGenerations);
 }
 
 void LLCA2DRenderer::updateSim() {
@@ -149,8 +138,4 @@ void LLCA2DRenderer::drawSim() {
 	mShader.bind();
 	drawQuad();
 	mShader.unbind();
-}
-
-ruleset LLCA2DRenderer::parseRuleset(char* rules) {
-	return ruleset();
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "FileHandler.h"
 #include "Renderer.h"
 
 #include "imgui/imgui.h"
@@ -8,6 +9,9 @@
 #else
 #include <SDL2/SDL.h>
 #endif
+
+#include <string>
+#include <vector>
 
 class Window {
 public:
@@ -24,6 +28,7 @@ private:
 
 	void drawDebugPanel(float dt);
 	void drawIOPanel(float dt);
+	void drawParameterPanel(float dt);
 	void drawSimPanel(float dt);
 
 	SDL_Window* mWindow = nullptr;
@@ -31,6 +36,7 @@ private:
 	ImGuiIO mIo;
 
 	Renderer* mRenderer = nullptr;
+	FileHandler* mFileHandler = nullptr;
 
 	GLuint mSimTexture;
 
@@ -49,4 +55,8 @@ private:
 
 	bool mRunSimulation = false;
 	float mIterationDelay = 0;
+
+	std::string mSelectedSaveFile = "myconfig";
+	int mSelectedLoadFile = 0;
+	std::vector<char*> mConfigFiles{};
 };

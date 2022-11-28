@@ -1,5 +1,6 @@
 #include "Window.h"
 
+#include "LLCA2DFileHandler.h"
 #include "LLCA2DRenderer.h"
 #include "Timer.h"
 #include "../Simulation/GLUtils.h"
@@ -70,12 +71,17 @@ mWidth(width), mHeight(height) {
 #endif
 
 	mRenderer = new LLCA2DRenderer(*this, mSimTexture);
+	mFileHandler = new LLCA2DFileHandler(*(LLCA2DRenderer*)mRenderer, *(LLCA2DSimulator*)&mRenderer->getSimulator());
+	mFileHandler->find(mConfigFiles);
+	std::sort(mConfigFiles.begin(), mConfigFiles.end());
 
 	mInitSuccess = true;
 }
 
 Window::~Window() {
     delete mRenderer;
+	for (auto& fileStr : mConfigFiles)
+		delete fileStr;
 
 	glDeleteTextures(1, &mSimTexture);
 
@@ -124,10 +130,17 @@ void Window::mainloop() {
 
 			ImGui::EndChild();
 
-			h = ImGui::GetContentRegionAvail().y - 30.0f;
-			ImGui::BeginChild("Config", ImVec2(w, h), true);
+			h = (ImGui::GetContentRegionAvail().y - 30.0f) / 3.0f;
+			ImGui::BeginChild("IO", ImVec2(w, h), true);
 
 			drawIOPanel(dt);
+
+			ImGui::EndChild();
+
+			h = ImGui::GetContentRegionAvail().y - 30.0f;
+			ImGui::BeginChild("Parameter", ImVec2(w, h), true);
+
+			drawParameterPanel(dt);
 
 			ImGui::EndChild();
 
@@ -218,6 +231,7 @@ void Window::drawDebugPanel(float dt) {
 }
 
 void Window::drawIOPanel(float dt) {
+	ImVec2 bounds = ImGui::GetContentRegionAvail();
 	ImGui::PushItemWidth(-FLT_MIN);
 
 	mRunSimulation ^= ImGui::Button(mRunSimulation ? "Stop Simulation" : "Start Simulation", ImVec2(-FLT_MIN, 0));
@@ -227,6 +241,38 @@ void Window::drawIOPanel(float dt) {
 
 	ImGui::Text("Iteration Delay");
 	ImGui::DragFloat("##IterationDelay", &mIterationDelay, 10.0f, 0.0f, 2000.0f, "%.0f ms");
+
+	ImGui::Separator();
+
+	if (ImGui::Button("Load"))
+		mFileHandler->read(mConfigFiles[mSelectedLoadFile]);
+	ImGui::SameLine(0, 0);
+	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("Delete ").x);
+	ImGui::Combo("##SelectFile", &mSelectedLoadFile, (const char**)mConfigFiles.data(), mConfigFiles.size());
+	ImGui::SameLine(0, 0);
+	if (ImGui::Button("Delete", ImVec2(-FLT_MIN, 0))) {
+		mFileHandler->remove(mConfigFiles[mSelectedLoadFile]);
+		mConfigFiles.erase(mConfigFiles.begin() + mSelectedLoadFile);
+		mSelectedLoadFile = std::clamp(mSelectedLoadFile - 1, 0, (int)mConfigFiles.size());
+	}
+
+	ImGui::Separator();
+
+	if (ImGui::Button("Save")) {
+		mFileHandler->write(mSelectedSaveFile);
+		char* file = new char[mSelectedSaveFile.length() + 1];
+		strcpy(file, mSelectedSaveFile.data());
+		mConfigFiles.push_back(file);
+		std::sort(mConfigFiles.begin(), mConfigFiles.end());
+	}
+	ImGui::SameLine(0, 0);
+	ImGui::InputText("##SaveLocation", &mSelectedSaveFile);
+
+	ImGui::PopItemWidth();
+}
+
+void Window::drawParameterPanel(float dt) {
+	ImGui::PushItemWidth(-FLT_MIN);
 
 	mRenderer->drawParameters();
 
