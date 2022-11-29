@@ -195,20 +195,9 @@ void Window::handleEvent(SDL_Event& e) {
 					break;
 			}
 			break;
-		case SDL_KEYDOWN:
-			switch (e.key.keysym.sym) {
-				case SDLK_ESCAPE:
-					mRunning = false;
-					break;
-				case SDLK_SPACE:
-					mRunSimulation = !mRunSimulation;
-					break;
-				case SDLK_r:
-					mRenderer->getSimulator().reset();
-					break;
-			}
-			break;
 	}
+	if (ImGui::IsKeyPressed(ImGuiKey_Escape))
+		mRunning = false;
 }
 
 void Window::drawDebugPanel(float dt) {
@@ -281,6 +270,9 @@ void Window::drawParameterPanel(float dt) {
 
 void Window::drawSimPanel(float dt) {
 	static float delta = 0;
+
+	if (ImGui::IsKeyPressed(ImGuiKey_Space))
+		mRunSimulation = !mRunSimulation;
 	if (mRunSimulation) {
 		delta += dt;
 		if (delta > mIterationDelay) {
