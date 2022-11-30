@@ -16,17 +16,25 @@ LLCA2DRenderer::LLCA2DRenderer(Window& window, GLuint& texture) :
 mSimulator(), Renderer(window, mSimulator, texture), mShader(&shaderVertexCode, &shaderFragmentCode) {
 	mShader.bind();
 	
+	mViewOffsetUniform = glGetUniformLocation(mShader.getProgram(), "viewOffset");
 	mSimBoundsUniform  = glGetUniformLocation(mShader.getProgram(), "simulationBounds");
+	mImageBoundsUniform  = glGetUniformLocation(mShader.getProgram(), "imageBounds");
 	mInvNumGenerationsUniform = glGetUniformLocation(mShader.getProgram(), "invNumGenerations");
 
 	mLiveColUniform = glGetUniformLocation(mShader.getProgram(), "liveCol");
 	mDeadColUniform = glGetUniformLocation(mShader.getProgram(), "deadCol");
+	mBorderColUniform = glGetUniformLocation(mShader.getProgram(), "borderCol");
+	mGridColUniform = glGetUniformLocation(mShader.getProgram(), "gridCol");
 
+	glUniform4fv(mViewOffsetUniform, 1, &mViewOffset[0]);
 	glUniform2uiv(mSimBoundsUniform, 1, &mSimulator.getBounds()[0]);
+	glUniform2fv(mImageBoundsUniform, 1, &mImageBounds[0]);
 	glUniform1f(mInvNumGenerationsUniform, 1.0f / mSimulator.getNumGenerations());
 
 	glUniform3fv(mLiveColUniform, 1, &mLiveColour[0]);
 	glUniform3fv(mDeadColUniform, 1, &mDeadColour[0]);
+	glUniform4fv(mBorderColUniform, 1, &mBorderColour[0]);
+	glUniform4fv(mGridColUniform, 1, &mGridColour[0]);
 
 	mShader.unbind();
 }
@@ -43,6 +51,10 @@ void LLCA2DRenderer::drawParameters() {
 	glm::uvec2 simBounds = mSimulator.getBounds();
 	if (ImGui::DragInt2("##bounds", (int*)&simBounds[0], 10, 2, MAX_SIZE)) {
 		setBounds(simBounds);
+	}
+
+	if (ImGui::Button("Reset View", ImVec2(-FLT_MIN, 0))) {
+		setViewOffset(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 
     ImGui::Text("Init Mode");
@@ -128,6 +140,41 @@ void LLCA2DRenderer::drawParameters() {
 	cell numGenerations = mSimulator.getNumGenerations();
 	if (ImGui::DragInt("##NumGenerations", (int*)&numGenerations, 1, 1, 1000))
 		setNumGenerations(numGenerations);
+
+	ImGui::Text("Border:");
+	if (ImGui::ColorEdit4("##BorderColour", &mBorderColour[0])) {
+		mShader.bind();
+		glUniform4fv(mBorderColUniform, 1, &mBorderColour[0]);
+		mShader.unbind();
+	}
+
+	ImGui::Text("Grid");
+	if (ImGui::ColorEdit4("##GridColour", &mGridColour[0])) {
+		mShader.bind();
+		glUniform4fv(mGridColUniform, 1, &mGridColour[0]);
+		mShader.unbind();
+	}
+}
+
+void LLCA2DRenderer::focusAction() {
+	ImGui::SetMouseCursor(ImGuiMouseCursor_Hand);
+	if (ImGui::IsMouseDown(ImGuiMouseButton_Left))
+		mIsDragging = true;
+	if (ImGui::IsMouseReleased(ImGuiMouseButton_Left))
+		mIsDragging = false;
+	if (mIsDragging) {
+		ImVec2 mouseDelta = ImGui::GetIO().MouseDelta;
+		glm::vec2 delta = 2.0f * glm::vec2(mouseDelta.x * mViewOffset.z / mImageBounds.z, mouseDelta.y * mViewOffset.w / mImageBounds.w);
+		setViewOffset(mViewOffset - glm::vec4(delta, 0.0f, 0.0f));
+	}
+
+	if (ImGui::GetIO().MouseWheel != 0.0f) {
+		glm::uvec2 bounds = getBounds();
+		mZoomFactor = std::clamp((int)std::round(mZoomFactor - ImGui::GetIO().MouseWheel), (int)-std::sqrt(std::max(bounds.x, bounds.y)), cMaxZoom);
+		float zoom = std::pow(1.5f, mZoomFactor);
+
+		setViewOffset(glm::vec4(mViewOffset.x, mViewOffset.y, zoom, zoom));
+	}
 }
 
 void LLCA2DRenderer::updateSim() {
@@ -137,5 +184,11 @@ void LLCA2DRenderer::updateSim() {
 void LLCA2DRenderer::drawSim() {
 	mShader.bind();
 	drawQuad();
+	mShader.unbind();
+}
+
+void LLCA2DRenderer::imageResized() {
+	mShader.bind();
+	glUniform2fv(mImageBoundsUniform, 1, &mImageBounds[2]);
 	mShader.unbind();
 }

@@ -20,6 +20,13 @@ public:
 
 	void mainloop();
 
+	inline float getWidth() {
+		return mWidth;
+	}
+	inline float getHeight() {
+		return mHeight;
+	}
+
 	inline bool hasInitialized() {
 		return mInitSuccess;
 	}
@@ -33,12 +40,11 @@ private:
 
 	SDL_Window* mWindow = nullptr;
 	SDL_GLContext mGLContext{};
-	ImGuiIO mIo;
 
 	Renderer* mRenderer = nullptr;
 	FileHandler* mFileHandler = nullptr;
 
-	GLuint mSimTexture;
+	GLuint mSimTexture = 0;
 
 	ImVec2 mSimArea = ImVec2(100, 100);
 

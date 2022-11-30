@@ -34,6 +34,11 @@ void Renderer::draw() {
 	drawSim();
 }
 
+void Renderer::resizeImage(glm::vec4 imageBounds) {
+	mImageBounds = imageBounds;
+	imageResized();
+}
+
 void Renderer::drawQuad() {
 	glBindFramebuffer(GL_FRAMEBUFFER, mFBO);
 	glClear(GL_COLOR_BUFFER_BIT);

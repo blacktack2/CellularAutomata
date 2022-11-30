@@ -50,7 +50,6 @@ mWidth(width), mHeight(height) {
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	mIo = ImGui::GetIO();
 
 	ImGui::StyleColorsDark();
 
@@ -63,6 +62,8 @@ mWidth(width), mHeight(height) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mSimArea.x, mSimArea.y, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -290,6 +291,8 @@ void Window::drawSimPanel(float dt) {
 #ifdef _DEBUG
 		glCheckError();
 #endif
+		ImVec2 screenPos = ImGui::GetCursorScreenPos();
+		mRenderer->resizeImage(glm::vec4(screenPos.x, screenPos.y, mSimArea.x, mSimArea.y));
 	}
 
 	glViewport(0, 0, mSimArea.x, mSimArea.y);
@@ -297,4 +300,6 @@ void Window::drawSimPanel(float dt) {
 	glViewport(0, 0, mWidth, mHeight);
 
 	ImGui::Image((ImTextureID)(uintptr_t)mSimTexture, mSimArea);
+	if (ImGui::IsItemHovered())
+		mRenderer->focusAction();
 }
