@@ -13,6 +13,7 @@ public:
 	~LLCA2DRenderer();
 
 	virtual void drawParameters() override;
+	virtual void drawImageConfig() override;
 
 	virtual void focusAction() override;
 

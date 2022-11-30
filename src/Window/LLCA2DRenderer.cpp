@@ -53,10 +53,6 @@ void LLCA2DRenderer::drawParameters() {
 		setBounds(simBounds);
 	}
 
-	if (ImGui::Button("Reset View", ImVec2(-FLT_MIN, 0))) {
-		setViewOffset(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
-	}
-
     ImGui::Text("Init Mode");
     const char* INIT_MODE_NAMES[]{ "Random", "Single", "Horizontal", "Vertical", "Cross" };
     InitMode initMode = mSimulator.getInitMode();
@@ -166,6 +162,14 @@ void LLCA2DRenderer::drawParameters() {
 		glUniform4fv(mGridColUniform, 1, &mGridColour[0]);
 		mShader.unbind();
 	}
+}
+
+void LLCA2DRenderer::drawImageConfig() {
+	if (ImGui::Button("S"))
+		setViewOffset(glm::vec4(mViewOffset.x, mViewOffset.y, 1.0f, 1.0f));
+	ImGui::SameLine();
+	if (ImGui::Button("P"))
+		setViewOffset(glm::vec4(0.0f, 0.0f, mViewOffset.z, mViewOffset.w));
 }
 
 void LLCA2DRenderer::focusAction() {

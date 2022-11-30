@@ -165,6 +165,7 @@ void Window::mainloop() {
 			ImGui::BeginGroup();
 
 			bounds = ImGui::GetContentRegionAvail();
+			ImVec2 imPos = ImGui::GetCursorPos();
 			w = bounds.x;
 			h = bounds.y - 30.0f;
 			ImGui::BeginChild("Simulation", ImVec2(w, h), true);
@@ -186,6 +187,21 @@ void Window::mainloop() {
 			ImGui::EndGroup();
 
 			ImGui::End();
+			
+			static ImVec2 configOffset = ImVec2(0.0f, 0.0f);
+			ImGui::SetNextWindowPos(ImVec2(imPos.x + configOffset.x, imPos.y + configOffset.y));
+			ImGui::Begin("##ImageConfig", nullptr, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+			if (ImGui::IsItemActive()) {
+				configOffset.x += ImGui::GetIO().MouseDelta.x;
+				configOffset.y += ImGui::GetIO().MouseDelta.y;
+			}
+
+			mRenderer->drawImageConfig();
+
+			ImGui::End();
+			
+			if (!ImGui::IsAnyItemFocused())
+				ImGui::SetWindowFocus("##ImageConfig");
 		}
 
 		ImGui::Render();

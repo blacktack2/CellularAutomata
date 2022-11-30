@@ -17,6 +17,7 @@ public:
 	void draw();
 	void resizeImage(glm::vec4 imageBounds);
 	virtual void drawParameters() = 0;
+	virtual void drawImageConfig() = 0;
 	virtual void focusAction() = 0;
 
 	inline Simulator& getSimulator() { return mSimulator; }
