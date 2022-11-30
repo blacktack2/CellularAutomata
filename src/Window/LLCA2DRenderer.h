@@ -83,4 +83,8 @@ private:
 	bool mIsDragging = false;
 
 	const int cMaxZoom = 3;
+
+	std::random_device mRD;
+	std::mt19937 mMT = std::mt19937(mRD());
+	std::uniform_int_distribution<ruleset> mRandRule = std::uniform_int_distribution<ruleset>(0, (1 << 9) - 1);
 };

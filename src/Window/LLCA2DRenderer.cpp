@@ -141,6 +141,18 @@ void LLCA2DRenderer::drawParameters() {
 	if (ImGui::DragInt("##NumGenerations", (int*)&numGenerations, 1, 1, 1000))
 		setNumGenerations(numGenerations);
 
+	ImGui::Text("Randomize:");
+	if (ImGui::Button("Birth", ImVec2(ImGui::GetContentRegionAvail().x * (1.0f / 3.0f), 0.0f)))
+		mSimulator.setBirthRules(mRandRule(mRD));
+	ImGui::SameLine(0.0f, 0.0f);
+	if (ImGui::Button("Death", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 0.0f)))
+		mSimulator.setDeathRules(mRandRule(mRD));
+	ImGui::SameLine(0.0f, 0.0f);
+	if (ImGui::Button("Both", ImVec2(-FLT_MIN, 0.0f))) {
+		mSimulator.setBirthRules(mRandRule(mRD));
+		mSimulator.setDeathRules(mRandRule(mRD));
+	}
+
 	ImGui::Text("Border:");
 	if (ImGui::ColorEdit4("##BorderColour", &mBorderColour[0])) {
 		mShader.bind();
