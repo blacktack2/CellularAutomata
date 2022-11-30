@@ -280,14 +280,14 @@ void Window::drawIOPanel(float dt) {
 
 		ImGui::Checkbox("Don't ask again", &dontAskAgain);
 
-		if (ImGui::Button("Delete", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 0))) {
+		if (ImGui::Button("Delete", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 0.0f))) {
 			mSerializer->remove(mConfigFiles[mSelectedLoadFile]);
 			mConfigFiles.erase(mConfigFiles.begin() + mSelectedLoadFile);
 			mSelectedLoadFile = std::clamp(mSelectedLoadFile - 1, 0, (int)mConfigFiles.size());
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(-FLT_MIN, 0)))
+		if (ImGui::Button("Cancel", ImVec2(-FLT_MIN, 0.0f)))
 			ImGui::CloseCurrentPopup();
 		ImGui::EndPopup();
 	}
@@ -295,12 +295,34 @@ void Window::drawIOPanel(float dt) {
 	ImGui::Separator();
 
 	if (ImGui::Button("Save")) {
-		mSerializer->write(mSelectedSaveFile);
-		mConfigFiles.emplace_back(mSelectedSaveFile);
-		std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
+		if (std::find(mConfigFiles.begin(), mConfigFiles.end(), mSelectedSaveFile) != mConfigFiles.end()) {
+			ImGui::OpenPopup("Overwrite?");
+		} else {
+			mSerializer->write(mSelectedSaveFile);
+			mConfigFiles.emplace_back(mSelectedSaveFile);
+			std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
+		}
 	}
 	ImGui::SameLine(0, 0);
 	ImGui::InputText("##SaveLocation", &mSelectedSaveFile);
+
+	if (ImGui::BeginPopupModal("Overwrite?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text(std::string("The file [")
+			.append(mSelectedSaveFile)
+			.append("] already exists. Would you like to overwrite it?\nThis action cannot be undone").c_str());
+
+		ImGui::Separator();
+
+		if (ImGui::Button("Overwrite", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 0.0f))) {
+			mSerializer->write(mSelectedSaveFile);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(-FLT_MIN, 0)))
+			ImGui::CloseCurrentPopup();
+
+		ImGui::EndPopup();
+	}
 
 	ImGui::PopItemWidth();
 }
