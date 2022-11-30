@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 
-class FileHandler {
+class Serializer {
 public:
-	FileHandler();
-	virtual ~FileHandler();
+	Serializer();
+	virtual ~Serializer();
 
 	virtual bool find(std::vector<char*>& files);
 	virtual bool read(const std::string& filename) = 0;

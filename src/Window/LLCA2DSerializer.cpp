@@ -1,10 +1,10 @@
-#include "LLCA2DFileHandler.h"
+#include "LLCA2DSerializer.h"
 
-LLCA2DFileHandler::LLCA2DFileHandler(LLCA2DRenderer& renderer, LLCA2DSimulator& simulator) :
-mRenderer(renderer), mSimulator(simulator) {
+LLCA2DSerializer::LLCA2DSerializer(LLCA2DRenderer& renderer, LLCA2DSimulator& simulator) :
+Serializer(), mRenderer(renderer), mSimulator(simulator) {
 }
 
-bool LLCA2DFileHandler::read(const std::string& filename) {
+bool LLCA2DSerializer::read(const std::string& filename) {
 	Data data;
 	if (!read_(filename.c_str(), (void*)&data, sizeof(Data), 1))
 		return false;
@@ -26,7 +26,7 @@ bool LLCA2DFileHandler::read(const std::string& filename) {
 	return true;
 }
 
-bool LLCA2DFileHandler::write(const std::string& filename) {
+bool LLCA2DSerializer::write(const std::string& filename) {
 	Data data{
 		mRenderer.getLiveColour(),
 		mRenderer.getDeadColour(),

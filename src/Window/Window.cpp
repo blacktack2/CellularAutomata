@@ -1,6 +1,6 @@
 #include "Window.h"
 
-#include "LLCA2DFileHandler.h"
+#include "LLCA2DSerializer.h"
 #include "LLCA2DRenderer.h"
 #include "Timer.h"
 #include "../Simulation/GLUtils.h"
@@ -87,8 +87,8 @@ mWidth(width), mHeight(height) {
 #endif
 
 	mRenderer = new LLCA2DRenderer(*this, mSimTexture);
-	mFileHandler = new LLCA2DFileHandler(*(LLCA2DRenderer*)mRenderer, *(LLCA2DSimulator*)&mRenderer->getSimulator());
-	mFileHandler->find(mConfigFiles);
+	mSerializer = new LLCA2DSerializer(*(LLCA2DRenderer*)mRenderer, *(LLCA2DSimulator*)&mRenderer->getSimulator());
+	mSerializer->find(mConfigFiles);
 	std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
 
 	mInitSuccess = true;
@@ -250,13 +250,13 @@ void Window::drawIOPanel(float dt) {
 	ImGui::Separator();
 
 	if (ImGui::Button("Load"))
-		mFileHandler->read(mConfigFiles[mSelectedLoadFile]);
+		mSerializer->read(mConfigFiles[mSelectedLoadFile]);
 	ImGui::SameLine(0, 0);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("Delete ").x);
 	ImGui::Combo("##SelectFile", &mSelectedLoadFile, (const char**)mConfigFiles.data(), mConfigFiles.size());
 	ImGui::SameLine(0, 0);
 	if (ImGui::Button("Delete", ImVec2(-FLT_MIN, 0))) {
-		mFileHandler->remove(mConfigFiles[mSelectedLoadFile]);
+		mSerializer->remove(mConfigFiles[mSelectedLoadFile]);
 		mConfigFiles.erase(mConfigFiles.begin() + mSelectedLoadFile);
 		mSelectedLoadFile = std::clamp(mSelectedLoadFile - 1, 0, (int)mConfigFiles.size());
 	}
@@ -264,7 +264,7 @@ void Window::drawIOPanel(float dt) {
 	ImGui::Separator();
 
 	if (ImGui::Button("Save")) {
-		mFileHandler->write(mSelectedSaveFile);
+		mSerializer->write(mSelectedSaveFile);
 		char* file = new char[mSelectedSaveFile.length() + 1];
 		strcpy(file, mSelectedSaveFile.data());
 		mConfigFiles.push_back(file);

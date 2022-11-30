@@ -1,14 +1,14 @@
 #pragma once
-#include "FileHandler.h"
+#include "Serializer.h"
 #include "LLCA2DRenderer.h"
 #include "../Simulation/LLCA2DSimulator.h"
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
-class LLCA2DFileHandler : public FileHandler {
+class LLCA2DSerializer : public Serializer {
 public:
-	LLCA2DFileHandler(LLCA2DRenderer& renderer, LLCA2DSimulator& simulator);
+	LLCA2DSerializer(LLCA2DRenderer& renderer, LLCA2DSimulator& simulator);
 
 	virtual bool read(const std::string& filename) override;
 	virtual bool write(const std::string& filename) override;

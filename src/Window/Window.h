@@ -1,5 +1,5 @@
 #pragma once
-#include "FileHandler.h"
+#include "Serializer.h"
 #include "Renderer.h"
 
 #include "imgui/imgui.h"
@@ -42,7 +42,7 @@ private:
 	SDL_GLContext mGLContext{};
 
 	Renderer* mRenderer = nullptr;
-	FileHandler* mFileHandler = nullptr;
+	Serializer* mSerializer = nullptr;
 
 	GLuint mSimTexture = 0;
 
