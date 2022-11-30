@@ -14,6 +14,21 @@
 #include <chrono>
 #include <string>
 
+bool compareStrings(char* a, char* b) {
+	while (true) {
+		if (*a == '\0')
+			return true;
+		if (*b == '\0')
+			return false;
+		if (*a < *b)
+			return true;
+		else if (*a > *b)
+			return false;
+		a++;
+		b++;
+	}
+}
+
 Window::Window(const char* title, int width, int height) :
 mWidth(width), mHeight(height) {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -74,7 +89,7 @@ mWidth(width), mHeight(height) {
 	mRenderer = new LLCA2DRenderer(*this, mSimTexture);
 	mFileHandler = new LLCA2DFileHandler(*(LLCA2DRenderer*)mRenderer, *(LLCA2DSimulator*)&mRenderer->getSimulator());
 	mFileHandler->find(mConfigFiles);
-	std::sort(mConfigFiles.begin(), mConfigFiles.end());
+	std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
 
 	mInitSuccess = true;
 }
@@ -253,7 +268,7 @@ void Window::drawIOPanel(float dt) {
 		char* file = new char[mSelectedSaveFile.length() + 1];
 		strcpy(file, mSelectedSaveFile.data());
 		mConfigFiles.push_back(file);
-		std::sort(mConfigFiles.begin(), mConfigFiles.end());
+		std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
 	}
 	ImGui::SameLine(0, 0);
 	ImGui::InputText("##SaveLocation", &mSelectedSaveFile);
