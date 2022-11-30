@@ -261,10 +261,35 @@ void Window::drawIOPanel(float dt) {
 		},
 		mConfigFiles.data(), mConfigFiles.size());
 	ImGui::SameLine(0, 0);
+	static bool dontAskAgain = false;
 	if (ImGui::Button("Delete", ImVec2(-FLT_MIN, 0))) {
-		mSerializer->remove(mConfigFiles[mSelectedLoadFile]);
-		mConfigFiles.erase(mConfigFiles.begin() + mSelectedLoadFile);
-		mSelectedLoadFile = std::clamp(mSelectedLoadFile - 1, 0, (int)mConfigFiles.size());
+		if (dontAskAgain) {
+			mSerializer->remove(mConfigFiles[mSelectedLoadFile]);
+			mConfigFiles.erase(mConfigFiles.begin() + mSelectedLoadFile);
+			mSelectedLoadFile = std::clamp(mSelectedLoadFile - 1, 0, (int)mConfigFiles.size());
+		} else {
+			ImGui::OpenPopup("Delete?");
+		}
+	}
+
+	if (ImGui::BeginPopupModal("Delete?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+		ImGui::Text(std::string("Are you sure you want to delete the file [")
+			.append(mConfigFiles[mSelectedLoadFile])
+			.append("]?\nThis action cannot be undone").c_str());
+		ImGui::Separator();
+
+		ImGui::Checkbox("Don't ask again", &dontAskAgain);
+
+		if (ImGui::Button("Delete", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 0))) {
+			mSerializer->remove(mConfigFiles[mSelectedLoadFile]);
+			mConfigFiles.erase(mConfigFiles.begin() + mSelectedLoadFile);
+			mSelectedLoadFile = std::clamp(mSelectedLoadFile - 1, 0, (int)mConfigFiles.size());
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(-FLT_MIN, 0)))
+			ImGui::CloseCurrentPopup();
+		ImGui::EndPopup();
 	}
 
 	ImGui::Separator();
