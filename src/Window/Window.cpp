@@ -14,7 +14,9 @@
 #include <chrono>
 #include <string>
 
-bool compareStrings(char* a, char* b) {
+bool compareStrings(const std::string& sa, const std::string& sb) {
+	const char* a = sa.data();
+	const char* b = sb.data();
 	while (true) {
 		if (*a == '\0')
 			return true;
@@ -96,8 +98,6 @@ mWidth(width), mHeight(height) {
 
 Window::~Window() {
     delete mRenderer;
-	for (auto& fileStr : mConfigFiles)
-		delete fileStr;
 
 	glDeleteTextures(1, &mSimTexture);
 
@@ -253,7 +253,13 @@ void Window::drawIOPanel(float dt) {
 		mSerializer->read(mConfigFiles[mSelectedLoadFile]);
 	ImGui::SameLine(0, 0);
 	ImGui::SetNextItemWidth(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("Delete ").x);
-	ImGui::Combo("##SelectFile", &mSelectedLoadFile, (const char**)mConfigFiles.data(), mConfigFiles.size());
+	ImGui::Combo("##SelectFile", &mSelectedLoadFile,
+		[](void* data, int n, const char** out) {
+			std::string& file = ((std::string*)data)[n];
+			*out = file.c_str();
+			return true;
+		},
+		mConfigFiles.data(), mConfigFiles.size());
 	ImGui::SameLine(0, 0);
 	if (ImGui::Button("Delete", ImVec2(-FLT_MIN, 0))) {
 		mSerializer->remove(mConfigFiles[mSelectedLoadFile]);
@@ -265,9 +271,7 @@ void Window::drawIOPanel(float dt) {
 
 	if (ImGui::Button("Save")) {
 		mSerializer->write(mSelectedSaveFile);
-		char* file = new char[mSelectedSaveFile.length() + 1];
-		strcpy(file, mSelectedSaveFile.data());
-		mConfigFiles.push_back(file);
+		mConfigFiles.emplace_back(mSelectedSaveFile);
 		std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
 	}
 	ImGui::SameLine(0, 0);

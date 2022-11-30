@@ -64,5 +64,5 @@ private:
 
 	std::string mSelectedSaveFile = "myconfig";
 	int mSelectedLoadFile = 0;
-	std::vector<char*> mConfigFiles{};
+	std::vector<std::string> mConfigFiles{};
 };

@@ -10,7 +10,7 @@ Serializer::Serializer() {
 Serializer::~Serializer() {
 }
 
-bool Serializer::find(std::vector<char*>& files) {
+bool Serializer::find(std::vector<std::string>& files) {
 	const std::regex cFileRegex(std::string(cConfigRootDir).append(R"(([a-zA-Z0-9_-]+)\.)").append(getFileExtension()));
 	return find_(files, cFileRegex);
 }
@@ -19,16 +19,14 @@ bool Serializer::remove(const std::string& filename) {
 	return std::filesystem::remove(cConfigRootDir + filename + "." + getFileExtension());
 }
 
-bool Serializer::find_(std::vector<char*>& files, const std::regex& pattern) {
+bool Serializer::find_(std::vector<std::string>& files, const std::regex& pattern) {
 	std::filesystem::create_directory(cConfigRootDir);
 	for (const auto& entry : std::filesystem::directory_iterator(cConfigRootDir)) {
 		std::string path((const char*)entry.path().u8string().c_str());
 		std::smatch matches;
 		if (std::regex_search(path, matches, pattern)) {
 			std::string file = matches[1];
-			char* fpath = new char[file.length() + 1];
-			strcpy(fpath, file.data());
-			files.push_back(fpath);
+			files.emplace_back(file);
 		}
 	}
 	return true;
