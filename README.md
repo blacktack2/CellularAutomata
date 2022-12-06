@@ -28,10 +28,11 @@ This project makes use of the following external libraries:
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [OpenGL](https://www.khronos.org/) | [useful tutorial](https://learnopengl.com/)
 - [GLM](http://glm.g-truc.net/)
+- [stb](https://github.com/nothings/stb)
 
 All credit for the afformentioned libraries goes to their respective author/authors.
 
-The source code for ImGui, OpenGL, and GLM is included within the project
+The source code for ImGui, OpenGL, GLM, and stb is included within the project
 repository, and so they do not need further steps to install.
 
 #### SDL2

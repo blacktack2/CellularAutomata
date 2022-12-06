@@ -1,5 +1,6 @@
 #include "LLCA2DRenderer.h"
 
+#include "IconAtlasHandler.h"
 #include "Window.h"
 
 #include <cmath>
@@ -165,11 +166,10 @@ void LLCA2DRenderer::drawParameters() {
 }
 
 void LLCA2DRenderer::drawImageConfig() {
-	if (ImGui::Button("S"))
-		setViewOffset(glm::vec4(mViewOffset.x, mViewOffset.y, 1.0f, 1.0f));
-	ImGui::SameLine();
-	if (ImGui::Button("P"))
-		setViewOffset(glm::vec4(0.0f, 0.0f, mViewOffset.z, mViewOffset.w));
+	IconAtlasHandler::AtlasMap* map = IconAtlasHandler::getAtlasMap("Arrows");
+	IconAtlasHandler::Icon& icon = map->icons.find("arrow_all [#328]")->second;
+	if (ImGui::ImageButton("ResetView", (ImTextureID)map->atlas.id, ImVec2(16, 16), icon.uv1, icon.uv2))
+		setViewOffset(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 }
 
 void LLCA2DRenderer::focusAction() {

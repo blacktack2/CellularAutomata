@@ -1,5 +1,7 @@
 #include "Window.h"
 
+#include "IconAtlasHandler.h"
+#include "ImageLoader.h"
 #include "LLCA2DSerializer.h"
 #include "LLCA2DRenderer.h"
 #include "Timer.h"
@@ -92,6 +94,8 @@ mWidth(width), mHeight(height) {
 	mSerializer = new LLCA2DSerializer(*(LLCA2DRenderer*)mRenderer, *(LLCA2DSimulator*)&mRenderer->getSimulator());
 	mSerializer->find(mConfigFiles);
 	std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
+
+	IconAtlasHandler::loadAtlasMap("Arrows");
 
 	mInitSuccess = true;
 }
