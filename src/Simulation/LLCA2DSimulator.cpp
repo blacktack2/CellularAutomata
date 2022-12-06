@@ -73,26 +73,26 @@ void LLCA2DSimulator::clearCells() {
 void LLCA2DSimulator::fillCellsRandom() {
     for (size_t x = 0; x < mBounds.x; x++)
         for (size_t y = 0; y < mBounds.y; y++)
-            mCells[x + y * MAX_SIZE] = mRandBool(mMT) ? mNumGenerations : 0;
+            mCells[x + y * cMaxSize] = mRandBool(mMT) ? mNumGenerations : 0;
 }
 
 void LLCA2DSimulator::fillCells1() {
-    mCells[(size_t)(mBounds.x * 0.5f + mBounds.y * 0.5f * MAX_SIZE)] = mNumGenerations;
+    mCells[(size_t)(mBounds.x * 0.5f + mBounds.y * 0.5f * cMaxSize)] = mNumGenerations;
 }
 
 void LLCA2DSimulator::fillCellsLineH() {
     for (size_t x = 0; x < mBounds.x; x++)
-        mCells[x + (size_t)(mBounds.y * 0.5f * MAX_SIZE)] = mNumGenerations;
+        mCells[x + (size_t)(mBounds.y * 0.5f * cMaxSize)] = mNumGenerations;
 }
 
 void LLCA2DSimulator::fillCellsLineV() {
     for (size_t y = 0; y < mBounds.y; y++)
-        mCells[(size_t)(mBounds.x * 0.5f) + y * MAX_SIZE] = mNumGenerations;
+        mCells[(size_t)(mBounds.x * 0.5f) + y * cMaxSize] = mNumGenerations;
 }
 
 void LLCA2DSimulator::fillCellsCross() {
     for (size_t x = 0; x < mBounds.x; x++)
-        mCells[x + (size_t)(mBounds.y * 0.5f * MAX_SIZE)] = mNumGenerations;
+        mCells[x + (size_t)(mBounds.y * 0.5f * cMaxSize)] = mNumGenerations;
     for (size_t y = 0; y < mBounds.y; y++)
-        mCells[(size_t)(mBounds.x * 0.5f) + y * MAX_SIZE] = mNumGenerations;
+        mCells[(size_t)(mBounds.x * 0.5f) + y * cMaxSize] = mNumGenerations;
 }

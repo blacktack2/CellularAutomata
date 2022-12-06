@@ -41,7 +41,7 @@ public:
 		mShader.unbind();
 	}
 
-	inline void setNumGenerations(cell numGenerations) {
+	inline void setNumGenerations(LLCA2DSimulator::cell numGenerations) {
 		mSimulator.setNumGenerations(numGenerations);
 		mShader.bind();
 		glUniform1f(mInvNumGenerationsUniform, 1.0f / numGenerations);
@@ -87,5 +87,5 @@ private:
 
 	std::random_device mRD;
 	std::mt19937 mMT = std::mt19937(mRD());
-	std::uniform_int_distribution<ruleset> mRandRule = std::uniform_int_distribution<ruleset>(0, (1 << 9) - 1);
+	std::uniform_int_distribution<LLCA2DSimulator::ruleset> mRandRule = std::uniform_int_distribution<LLCA2DSimulator::ruleset>(0, (1 << 9) - 1);
 };

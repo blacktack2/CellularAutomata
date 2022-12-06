@@ -6,32 +6,29 @@
 
 #include <random>
 
-const size_t MAX_SIZE = 1000;
-const size_t MAX_CELLS = MAX_SIZE * MAX_SIZE;
-
-typedef unsigned int cell;
-typedef unsigned int ruleset;
-
-enum class EdgeMode {
-	CLAMP = 0u,
-	WRAP = 1u,
-	DEAD = 2u,
-	LIVE = 3u,
-	MAX
-};
-
-enum class InitMode {
-    RANDOM,
-    SINGLE,
-    LINEH,
-    LINEV,
-    CROSS,
-    MAX
-};
-
 // 2D Lifelike Cellular Automata
 class LLCA2DSimulator : public Simulator {
 public:
+	typedef unsigned int cell;
+	typedef unsigned int ruleset;
+
+	enum class EdgeMode {
+		CLAMP = 0u,
+		WRAP = 1u,
+		DEAD = 2u,
+		LIVE = 3u,
+		MAX
+	};
+
+	enum class InitMode {
+		RANDOM,
+		SINGLE,
+		LINEH,
+		LINEV,
+		CROSS,
+		MAX
+	};
+
 	LLCA2DSimulator();
 	~LLCA2DSimulator();
 
@@ -95,6 +92,9 @@ public:
 	inline void setInitMode(InitMode initMode) {
 	    mInitMode = initMode;
 	}
+
+	static const size_t cMaxSize = 1000;
+	static const size_t cMaxCells = cMaxSize * cMaxSize;
 private:
 	void updateGenerations(cell newGen, cell oldGen);
 
@@ -122,7 +122,7 @@ private:
 
 	GLuint mEdgeModeUniform;
 
-	cell mCells[MAX_CELLS]{};
+	cell mCells[cMaxCells]{};
 
 	GLuint mCellsBufferA;
 	GLuint mCellsBufferB;

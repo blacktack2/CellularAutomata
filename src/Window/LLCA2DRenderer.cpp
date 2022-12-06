@@ -50,21 +50,21 @@ void LLCA2DRenderer::drawParameters() {
 
 	ImGui::Text("Simulation Bounds");
 	glm::uvec2 simBounds = mSimulator.getBounds();
-	if (ImGui::DragInt2("##bounds", (int*)&simBounds[0], 10, 2, MAX_SIZE)) {
+	if (ImGui::DragInt2("##bounds", (int*)&simBounds[0], 10, 2, LLCA2DSimulator::cMaxSize)) {
 		setBounds(simBounds);
 	}
 
     ImGui::Text("Init Mode");
     const char* INIT_MODE_NAMES[]{ "Random", "Single", "Horizontal", "Vertical", "Cross" };
-    InitMode initMode = mSimulator.getInitMode();
-    if (ImGui::Combo("##InitMode", (int*)&initMode, INIT_MODE_NAMES, (int)InitMode::MAX)) {
+    LLCA2DSimulator::InitMode initMode = mSimulator.getInitMode();
+    if (ImGui::Combo("##InitMode", (int*)&initMode, INIT_MODE_NAMES, (int)LLCA2DSimulator::InitMode::MAX)) {
         mSimulator.setInitMode(initMode);
     }
 
 	ImGui::Text("Edge Mode");
 	const char* EDGE_MODE_NAMES[]{ "Clamp", "Wrap", "Dead", "Live" };
-	EdgeMode edgeMode = mSimulator.getEdgeMode();
-	if (ImGui::Combo("##EdgeMode", (int*)&edgeMode, EDGE_MODE_NAMES, (int)EdgeMode::MAX)) {
+	LLCA2DSimulator::EdgeMode edgeMode = mSimulator.getEdgeMode();
+	if (ImGui::Combo("##EdgeMode", (int*)&edgeMode, EDGE_MODE_NAMES, (int)LLCA2DSimulator::EdgeMode::MAX)) {
 		mSimulator.setEdgeMode(edgeMode);
 	}
 
@@ -87,8 +87,8 @@ void LLCA2DRenderer::drawParameters() {
 	ImGui::Text("Birth Rules");
 	if (ImGui::IsItemHovered())
 		ImGui::SetTooltip("Whether a dead cell should become alive or stay dead with 'n' neighbours");
-	ruleset birthRules = mSimulator.getBirthRules();
-	ruleset newBirthRules = birthRules;
+	LLCA2DSimulator::ruleset birthRules = mSimulator.getBirthRules();
+	LLCA2DSimulator::ruleset newBirthRules = birthRules;
 	
 	for (unsigned int i = 0; i < 9; i++) {
 		bool rule = (birthRules & (1 << i));
@@ -112,8 +112,8 @@ void LLCA2DRenderer::drawParameters() {
 	ImGui::Text("Death Rules");
 	if (ImGui::IsItemHovered())
 		ImGui::SetTooltip("Whether a live cell should stay alive or become dead with 'n' neighbours");
-	ruleset deathRules = mSimulator.getDeathRules();
-	ruleset newDeathRules = deathRules;
+	LLCA2DSimulator::ruleset deathRules = mSimulator.getDeathRules();
+	LLCA2DSimulator::ruleset newDeathRules = deathRules;
 
 	for (unsigned int i = 0; i < 9; i++) {
 		bool rule = deathRules & (1 << i);
@@ -134,7 +134,7 @@ void LLCA2DRenderer::drawParameters() {
 	if (deathRules != newDeathRules)
 		mSimulator.setDeathRules(newDeathRules);
 
-	cell numGenerations = mSimulator.getNumGenerations();
+	LLCA2DSimulator::cell numGenerations = mSimulator.getNumGenerations();
 	if (ImGui::DragInt("##NumGenerations", (int*)&numGenerations, 1, 1, 1000))
 		setNumGenerations(numGenerations);
 

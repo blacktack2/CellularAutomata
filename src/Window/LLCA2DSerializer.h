@@ -23,12 +23,12 @@ private:
 
 		glm::uvec2 bounds;
 
-		ruleset birthRules;
-		ruleset deathRules;
-		cell numGenerations;
+		LLCA2DSimulator::ruleset birthRules;
+		LLCA2DSimulator::ruleset deathRules;
+		LLCA2DSimulator::cell numGenerations;
 
-		InitMode initMode;
-		EdgeMode edgeMode;
+		LLCA2DSimulator::InitMode initMode;
+		LLCA2DSimulator::EdgeMode edgeMode;
 	};
 
 	LLCA2DRenderer& mRenderer;
