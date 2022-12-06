@@ -109,7 +109,7 @@ private:
 
 	ruleset mBirthRules = 1u << 3u;
 	ruleset mDeathRules = ~(1u << 2u | 1u << 3u) & ((1u << 10u) - 1u);
-	glm::uvec2 mBounds = glm::uvec2(100u, 100u);
+	glm::uvec2 mBounds = glm::uvec2(1000u, 1000u);
 	cell mNumGenerations = 1u;
 
 	EdgeMode mEdgeMode = EdgeMode::WRAP;
