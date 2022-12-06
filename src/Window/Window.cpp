@@ -135,7 +135,7 @@ void Window::mainloop() {
 		{
 			ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 			ImGui::SetNextWindowSize(ImVec2((float)mWidth, (float)mHeight), ImGuiCond_Always);
-			ImGui::Begin("##Root", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+			ImGui::Begin("##Root", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus);
 			ImVec2 bounds;
 			float w, h;
 
@@ -204,8 +204,8 @@ void Window::mainloop() {
 
 			ImGui::End();
 			
-			if (!ImGui::IsAnyItemFocused())
-				ImGui::SetWindowFocus("##ImageConfig");
+			//if (!ImGui::IsAnyItemFocused())
+			//	ImGui::SetWindowFocus("##ImageConfig");
 		}
 
 		ImGui::Render();
