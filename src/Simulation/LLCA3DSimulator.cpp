@@ -1,8 +1,7 @@
 #include "LLCA3DSimulator.h"
 
 const GLchar* LLCA3Dcomp =
-""
-//#include "../Shaders/LLCA3D.comp"
+#include "../Shaders/LLCA3D.comp"
 ;
 
 LLCA3DSimulator::LLCA3DSimulator() : Simulator(), mIterationCompute(&LLCA3Dcomp) {

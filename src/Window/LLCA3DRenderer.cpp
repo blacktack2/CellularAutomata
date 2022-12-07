@@ -1,12 +1,10 @@
 #include "LLCA3DRenderer.h"
 
 const GLchar* LLCA3Dvert =
-""
-//#include "../Shaders/texQuad.vert"
+#include "../Shaders/texQuad.vert"
 ;
 const GLchar* LLCA3Dfrag =
-""
-//#include "../Shaders/LLCA3D.frag"
+#include "../Shaders/LLCA3D.frag"
 ;
 
 LLCA3DRenderer::LLCA3DRenderer(Window& window, GLuint& texture) :
