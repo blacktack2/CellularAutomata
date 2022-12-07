@@ -2,11 +2,11 @@
 
 #include "GLUtils.h"
 
-const GLchar* iterationComputeCode =
+const GLchar* LLCA2Dcomp =
 #include "../Shaders/LLCA2D.comp"
 ;
 
-LLCA2DSimulator::LLCA2DSimulator() : Simulator(), mIterationCompute(&iterationComputeCode) {
+LLCA2DSimulator::LLCA2DSimulator() : Simulator(), mIterationCompute(&LLCA2Dcomp) {
 	mIterationCompute.bind();
 
 	mBirthRulesUniform = glGetUniformLocation(mIterationCompute.getProgram(), "birthRules");

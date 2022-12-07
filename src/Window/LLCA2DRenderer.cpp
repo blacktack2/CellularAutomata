@@ -6,15 +6,15 @@
 #include <cmath>
 #include <string>
 
-const GLchar* shaderVertexCode =
+const GLchar* LLCA2Dvert =
 #include "../Shaders/texQuad.vert"
 ;
-const GLchar* shaderFragmentCode =
+const GLchar* LLCA2Dfrag =
 #include "../Shaders/LLCA2D.frag"
 ;
 
 LLCA2DRenderer::LLCA2DRenderer(Window& window, GLuint& texture) :
-mSimulator(), Renderer(window, mSimulator, texture), mShader(&shaderVertexCode, &shaderFragmentCode) {
+mSimulator(), Renderer(window, mSimulator, texture), mShader(&LLCA2Dvert, &LLCA2Dfrag) {
 	mShader.bind();
 	
 	mViewOffsetUniform = glGetUniformLocation(mShader.getProgram(), "viewOffset");
