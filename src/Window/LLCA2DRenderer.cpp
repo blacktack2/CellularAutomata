@@ -168,8 +168,10 @@ void LLCA2DRenderer::drawParameters() {
 void LLCA2DRenderer::drawImageConfig() {
 	IconAtlasHandler::AtlasMap* map = IconAtlasHandler::getAtlasMap("Arrows");
 	IconAtlasHandler::Icon& icon = map->icons.find("arrow_all [#328]")->second;
-	if (ImGui::ImageButton("ResetView", (ImTextureID)map->atlas.id, ImVec2(16, 16), icon.uv1, icon.uv2))
+	if (ImGui::ImageButton("ResetView", (ImTextureID)map->atlas.id, ImVec2(16, 16), icon.uv1, icon.uv2)) {
 		setViewOffset(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+		mZoomFactor = 0;
+	}
 }
 
 void LLCA2DRenderer::focusAction() {
