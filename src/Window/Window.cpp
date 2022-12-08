@@ -261,6 +261,9 @@ void Window::drawIOPanel(float dt) {
 
 	mRunSimulation ^= ImGui::Button(mRunSimulation ? "Stop Simulation" : "Start Simulation", ImVec2(-FLT_MIN, 0));
 
+	if (ImGui::Button("Iterate Once", ImVec2(-FLT_MIN, 0)))
+		mRenderer->update();
+
 	if (ImGui::Button("Reset", ImVec2(-FLT_MIN, 0)))
 		mRenderer->getSimulator().reset();
 
