@@ -101,8 +101,9 @@ private:
 	void clearCells();
 	void fillCellsRandom();
 	void fillCells1();
-	void fillCellsLineH();
-	void fillCellsLineV();
+	void fillCellsLineX();
+	void fillCellsLineY();
+	void fillCellsLineZ();
 	void fillCellsCross();
 
 	ComputeShader mIterationCompute;
