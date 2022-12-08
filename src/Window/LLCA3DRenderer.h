@@ -74,4 +74,6 @@ private:
 	std::random_device mRD;
 	std::mt19937 mMT = std::mt19937(mRD());
 	std::uniform_int_distribution<LLCA3DSimulator::ruleset> mRandRule = std::uniform_int_distribution<LLCA3DSimulator::ruleset>(0, (1 << 9) - 1);
+
+	Mesh* mCube = Mesh::generateCube();
 };
