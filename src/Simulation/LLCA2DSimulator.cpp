@@ -19,9 +19,9 @@ LLCA2DSimulator::LLCA2DSimulator() : Simulator(), mIterationCompute(&LLCA2Dcomp)
 	glUniform1ui(mBirthRulesUniform, mBirthRules);
 	glUniform1ui(mDeathRulesUniform, mDeathRules);
 	glUniform1ui(mNumGenerationsUniform, mNumGenerations);
-	glUniform2ui(mBoundsUniform, mBounds.x, mBounds.y);
+	glUniform2uiv(mBoundsUniform, 1, &mBounds[0]);
 
-	glUniform1ui(mEdgeModeUniform, (unsigned int)mEdgeMode);
+	glUniform1ui(mEdgeModeUniform, (GLuint)mEdgeMode);
 
 	mIterationCompute.unbind();
 
