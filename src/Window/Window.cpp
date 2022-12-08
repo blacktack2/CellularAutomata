@@ -203,9 +203,6 @@ void Window::mainloop() {
 			mRenderer->drawImageConfig();
 
 			ImGui::End();
-			
-			//if (!ImGui::IsAnyItemFocused())
-			//	ImGui::SetWindowFocus("##ImageConfig");
 		}
 
 		ImGui::Render();
@@ -366,7 +363,7 @@ void Window::drawSimPanel(float dt) {
 	if (mRunSimulation) {
 		delta += dt;
 		if (delta > mIterationDelay) {
-			delta -= mIterationDelay;
+			delta = 0;
 			mRenderer->update();
 		}
 	}
