@@ -12,6 +12,7 @@ public:
 
     void draw() const;
 
+    static Mesh* generateCube();
     static Mesh* generateScreenQuad();
 
     static Mesh* getScreenQuad();
@@ -20,6 +21,7 @@ private:
         VERTICES2 = 0u,
         VERTICES3,
         VERTICES4,
+        INDICES,
         MAX
     };
 
@@ -31,8 +33,10 @@ private:
 
     GLuint mType = GL_TRIANGLES;
     GLuint mNumVertices = 0;
+    GLuint mNumIndices = 0;
 
     glm::vec2* mVertices2 = nullptr;
     glm::vec3* mVertices3 = nullptr;
     glm::vec4* mVertices4 = nullptr;
+    GLuint* mIndices = nullptr;
 };

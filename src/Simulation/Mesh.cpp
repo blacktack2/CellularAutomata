@@ -14,8 +14,29 @@ Mesh::~Mesh() {
 
 void Mesh::draw() const {
     glBindVertexArray(mArrayObject);
-    glDrawArrays(mType, 0, mNumVertices);
+    if (mVBOs[(size_t)VBOIndex::INDICES])
+        glDrawElements(mType, mNumIndices, GL_UNSIGNED_INT, nullptr);
+    else
+        glDrawArrays(mType, 0, mNumVertices);
     glBindVertexArray(0);
+}
+
+Mesh* Mesh::generateCube() {
+    Mesh* mesh = new Mesh();
+    mesh->mType = GL_TRIANGLES;
+    mesh->mNumVertices = 8;
+
+    mesh->mVertices3 = new glm::vec3[8]{
+        glm::vec3(-1.0f, -1.0f, -1.0f),
+        glm::vec3( 1.0f, -1.0f, -1.0f),
+        glm::vec3(-1.0f,  1.0f, -1.0f),
+        glm::vec3( 1.0f,  1.0f, -1.0f),
+        glm::vec3(-1.0f, -1.0f,  1.0f),
+        glm::vec3( 1.0f, -1.0f,  1.0f),
+        glm::vec3(-1.0f,  1.0f,  1.0f),
+        glm::vec3( 1.0f,  1.0f,  1.0f),
+    };
+    return mesh;
 }
 
 Mesh *Mesh::generateScreenQuad() {
@@ -49,6 +70,17 @@ void Mesh::bufferData() {
     if (mVertices4)
         uploadAttribute(VBOIndex::VERTICES4, mNumVertices, sizeof(glm::vec4), 4, mVertices4, "Vertices4");
 
+    if (mIndices) {
+        GLuint& id = mVBOs[(size_t)VBOIndex::INDICES];
+        glGenBuffers(1, &id);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, mNumIndices * sizeof(GLuint), mIndices, GL_STATIC_DRAW);
+
+        glObjectLabel(GL_BUFFER, id, -1, "Indices");
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
@@ -62,6 +94,4 @@ void Mesh::uploadAttribute(VBOIndex vboIndex, GLuint numElements, GLsizei dataTy
     glEnableVertexAttribArray((GLuint)vboIndex);
 
     glObjectLabel(GL_BUFFER, id, -1, debugName);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
