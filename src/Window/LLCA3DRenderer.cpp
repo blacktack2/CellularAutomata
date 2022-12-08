@@ -1,7 +1,7 @@
 #include "LLCA3DRenderer.h"
 
 const GLchar* LLCA3Dvert =
-#include "../Shaders/texQuad.vert"
+#include "../Shaders/LLCA3D.vert"
 ;
 const GLchar* LLCA3Dfrag =
 #include "../Shaders/LLCA3D.frag"
