@@ -11,6 +11,7 @@ public:
     ~Mesh();
 
     void draw() const;
+    void drawInstanced(GLsizei count) const;
 
     static Mesh* generateCube();
     static Mesh* generateScreenQuad();

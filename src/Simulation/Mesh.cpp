@@ -21,6 +21,15 @@ void Mesh::draw() const {
     glBindVertexArray(0);
 }
 
+void Mesh::drawInstanced(GLsizei count) const {
+    glBindVertexArray(mArrayObject);
+    if (mVBOs[(size_t)VBOIndex::INDICES])
+        glDrawElementsInstanced(mType, mNumIndices, GL_UNSIGNED_INT, nullptr, count);
+    else
+        glDrawArraysInstanced(mType, 0, mNumVertices, count);
+    glBindVertexArray(0);
+}
+
 Mesh* Mesh::generateCube() {
     Mesh* mesh = new Mesh();
     mesh->mType = GL_TRIANGLES;
