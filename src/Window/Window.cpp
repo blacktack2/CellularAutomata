@@ -4,6 +4,8 @@
 #include "ImageLoader.h"
 #include "LLCA2DSerializer.h"
 #include "LLCA2DRenderer.h"
+#include "LLCA3DSerializer.h"
+#include "LLCA3DRenderer.h"
 #include "Timer.h"
 #include "../Simulation/GLUtils.h"
 
@@ -90,10 +92,7 @@ mWidth(width), mHeight(height) {
 	glCheckError();
 #endif
 
-	mRenderer = new LLCA2DRenderer(*this, mSimTexture);
-	mSerializer = new LLCA2DSerializer(*(LLCA2DRenderer*)mRenderer, *(LLCA2DSimulator*)&mRenderer->getSimulator());
-	mSerializer->find(mConfigFiles);
-	std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
+	loadSimulation(0);
 
 	IconAtlasHandler::loadAtlasMap("Arrows");
 
@@ -256,6 +255,14 @@ void Window::drawIOPanel(float dt) {
 	ImVec2 bounds = ImGui::GetContentRegionAvail();
 	ImGui::PushItemWidth(-FLT_MIN);
 
+	ImGui::Text("Simulation:");
+	static int currentSim = 0;
+	const char* SIMULATIONS[]{ "Lifelike2D", "Lifelike3D" };
+	if (ImGui::Combo("SimSelectionCombo", &currentSim, SIMULATIONS, 2))
+		loadSimulation(currentSim);
+
+	ImGui::Separator();
+
 	mRunSimulation ^= ImGui::Button(mRunSimulation ? "Stop Simulation" : "Start Simulation", ImVec2(-FLT_MIN, 0));
 
 	if (ImGui::Button("Iterate Once", ImVec2(-FLT_MIN, 0)))
@@ -388,4 +395,22 @@ void Window::drawSimPanel(float dt) {
 	ImGui::Image((ImTextureID)(uintptr_t)mSimTexture, mSimArea);
 	if (ImGui::IsItemHovered())
 		mRenderer->focusAction();
+}
+
+void Window::loadSimulation(int simulation) {
+	delete mRenderer;
+	delete mSerializer;
+	switch (simulation) {
+		case 0:
+			mRenderer = new LLCA2DRenderer(*this, mSimTexture);
+			mSerializer = new LLCA2DSerializer(*(LLCA2DRenderer*)mRenderer, *(LLCA2DSimulator*)&mRenderer->getSimulator());
+			mSerializer->find(mConfigFiles);
+			std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
+			break;
+		case 1:
+			mRenderer = new LLCA3DRenderer(*this, mSimTexture);
+			mSerializer = new LLCA3DSerializer(*(LLCA3DRenderer*)mRenderer, *(LLCA3DSimulator*)&mRenderer->getSimulator());
+			mSerializer->find(mConfigFiles);
+			std::sort(mConfigFiles.begin(), mConfigFiles.end(), compareStrings);
+	}
 }

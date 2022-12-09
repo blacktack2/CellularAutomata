@@ -38,6 +38,8 @@ private:
 	void drawParameterPanel(float dt);
 	void drawSimPanel(float dt);
 
+	void loadSimulation(int simulation);
+
 	SDL_Window* mWindow = nullptr;
 	SDL_GLContext mGLContext{};
 
