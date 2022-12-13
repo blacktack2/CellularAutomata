@@ -23,7 +23,7 @@ bool compareStrings(const std::string& sa, const std::string& sb) {
 	const char* b = sb.data();
 	while (true) {
 		if (*a == '\0')
-			return true;
+			return false;
 		if (*b == '\0')
 			return false;
 		if (*a < *b)
