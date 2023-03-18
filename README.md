@@ -18,6 +18,27 @@ parameter. A safe setting would be 300ms (about 3fps) though you can adjust this
 according to your own judgement (the default configuration of `Conway's Game
 of Life` should be fairly safe to experiment with).
 
+## Usage
+
+![](images/Application.png)
+
+Currently I have only implemented 2D Lifelike Cellular Automata, and the GUI layout
+is still a work in progress, so this section of the readme is limited and
+subject to change.
+
+![](images/IOPanel.png)
+
+![](images/ParameterPanel.png)
+
+## Examples
+
+| a | b |
+| :-: | :-: |
+| ![](videos/Conway.gif) | ![](videos/DayAndNight.gif) |
+| Conway's Game of Life (B3S23) | Day and Night (B3678S34678)
+| ![](videos/Replicator.gif) | ![](videos/B1S1357G100.gif) |
+| Replicator (B1357S1357) | Custom ruleset (B1S1357G100) |
+
 ## Installation
 
 ### Dependencies
@@ -76,25 +97,26 @@ version 2022 and do not know if other versions will work). It should be possible
 to build using CLion, though as of yet I have not been able to get this working
 due to issues with linking SDL2.
 
-## Usage
-
-Currently I have only implemented 2D Lifelike Cellular Automata, and the GUI layout
-is still a work in progress, so this section of the readme will be limited for now.
-
 ## Definitions
 
-### B/S Rule Notation
+### B/S/G Rule Notation
 
-Throughout this readme I will be using the B/S rule notation to describe the rules
-of a 2D Lifelike Cellular Atomata. The notation is formatted as `B<0-8>/S<0-8>` where
-`<0-8>` is replaced by a sequence of numbers. The numbers following the `B` (Birth)
+Throughout this readme I will be using the B/S/G rule notation to describe the rules
+of a 2D Lifelike Cellular Atomata. The notation is formatted as `B<0-8>/S<0-8>/G<1+>` where
+`<0-8>` is replaced by a sequence of numbers, and `<1+>` is any integer. The numbers following the `B` (Birth)
 dictate how many neighbours a dead cell must have to become alive. The numbers
 following the `S` (Survive) dictate how many neighbours a live cell must have to
-stay alive.
+stay alive. The numbers following the `G` (Generations) dictate how long a cell
+must wait before it can become alive again (if omitted, it is defaulted to 1).
 
 An example of this notation would be with `Conway's Game of Life` which is notated as
 `B3S32`. This means that a dead cell will become alive if it has exactly 3 neighbours,
 and a live cell will stay alive if it has 2 or 3 neighbours.
+
+An example with generations would be the ruleset `B1S1357G100`. This means that
+a dead cell will become alive if it has exactly 1 neighbour, a live cell will
+stay alive with 1, 3, 5, or 7 neighbours, and a dead cell must wait 100 iterations
+before it can become alive again.
 
 ### Cellular Automata
 
