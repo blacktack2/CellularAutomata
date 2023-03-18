@@ -14,7 +14,7 @@ ImageLoader::Image* ImageLoader::getImage(std::string name) {
 }
 
 ImageLoader::Image* ImageLoader::loadImage(const std::string& name) {
-	Image& out = sImages.emplace(name, Image(0, 0, 0)).first->second;
+	Image& out = sImages.emplace(name, Image{0, 0, 0}).first->second;
 	stbi_uc* imageData = stbi_load((cImageDir + name + cImageExt).c_str(), &out.width, &out.height, nullptr, 4);
 	if (imageData == nullptr)
 		return nullptr;

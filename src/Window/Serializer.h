@@ -19,5 +19,5 @@ protected:
 	bool read_(const char* filename, void* data, std::streamsize size, unsigned int amount);
 	bool write_(const char* filename, void* data, std::streamsize size, unsigned int amount);
 
-	const std::string& cConfigRootDir = "Saves/";
+	const std::string cConfigRootDir = "Saves/";
 };

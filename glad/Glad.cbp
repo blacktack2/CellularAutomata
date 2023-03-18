@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="Glad"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\..\;CMake Files\..\..\..\..\..\usr\;CMake Files\..\..\..\..\..\usr\lib\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\;CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\SDL2\;CMake Files\glad\;CMake Files\glm\;CMake Files\imgui\;CMake Files\stb\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/blacktack2/Documents/Rep/CellularAutomata/glad"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad">
+				<Option output="/home/blacktack2/Documents/Rep/CellularAutomata/glad/libglad.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/blacktack2/Documents/Rep/CellularAutomata/glad"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/SDL2"/>
+					<Add directory="/home/blacktack2/Documents/Rep/CellularAutomata/glad/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 glad"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="glad/fast">
+				<Option output="/home/blacktack2/Documents/Rep/CellularAutomata/glad/libglad.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/blacktack2/Documents/Rep/CellularAutomata/glad"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/SDL2"/>
+					<Add directory="/home/blacktack2/Documents/Rep/CellularAutomata/glad/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 glad/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/blacktack2/Documents/Rep/CellularAutomata/glad/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/glad/include/KHR/khrplatform.h">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/glad/include/glad/glad.h">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/glad/src/glad.c">
+			<Option target="glad"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/../../../../../usr/lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake">
+			<Option virtualFolder="CMake Files\..\..\..\..\..\usr\lib\x86_64-linux-gnu\cmake\SDL2\"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/glad/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\glad\"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/glm/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\glm\"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/imgui/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\imgui\"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/stb/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\stb\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

@@ -13,7 +13,7 @@ IconAtlasHandler::AtlasMap* IconAtlasHandler::loadAtlasMap(std::string name) {
 	ImageLoader::Image* image = ImageLoader::getImage(cFilePrefix + name);
 	if (image == nullptr)
 		return nullptr;
-	AtlasMap& map = sAtlasMaps.emplace(name, AtlasMap(*image)).first->second;
+	AtlasMap& map = sAtlasMaps.emplace(name, AtlasMap{*image}).first->second;
 	float invWidth = 1.0f / image->width;
 	float invHeight = 1.0f / image->height;
 
