@@ -1,6 +1,6 @@
 #include "ComputeShader.h"
 
-#include "src/Rendering/GLUtils.h"
+#include "../Rendering/GLUtils.h"
 
 ComputeShader::ComputeShader(const GLchar* const* code, GLsizei count) {
 	GLint success;

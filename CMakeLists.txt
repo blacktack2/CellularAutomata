@@ -31,10 +31,7 @@ endif()
 
 file(GLOB_RECURSE SRC CMAKE_CONFIGURE_DEPENDS "src/*.h" "src/*.cpp")
 
-add_subdirectory(glad/)
-add_subdirectory(glm/)
-add_subdirectory(imgui/)
-add_subdirectory(stb/)
+add_subdirectory(lib/)
 
 file(COPY Resources DESTINATION ${CMAKE_BINARY_DIR})
 
@@ -47,7 +44,7 @@ else()
 	add_executable(${EXECUTABLE} ${SRC} ${GLAD} ${GLM})
 	target_link_libraries(${EXECUTABLE} "glad" ${OPENGL_gl_LIBRARY})
 	if(APPLE)
-		target_link_libraries(${EXECUTABLE} ${SDL} glad glm imgui stb)
+		target_link_libraries(${EXECUTABLE} ${SDL} glad glm imgui lib/stb)
 	else()
 		target_link_libraries(${EXECUTABLE} ${SDL2_LIBRARIES} ${CMAKE_DL_LIBS} glad glm imgui stb)
 	endif()

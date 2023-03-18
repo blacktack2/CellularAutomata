@@ -1,6 +1,6 @@
 #pragma once
-#include "src/Rendering/Mesh.h"
-#include "src/Simulation/Simulator.h"
+#include "../Rendering/Mesh.h"
+#include "../Simulation/Simulator.h"
 
 #include <glad/glad.h>
 

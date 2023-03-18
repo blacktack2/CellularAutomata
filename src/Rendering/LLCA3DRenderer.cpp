@@ -3,10 +3,10 @@
 #include "IconAtlasHandler.h"
 
 const GLchar* LLCA3Dvert =
-#include "src/Shaders/LLCA3D.vert"
+#include "../Shaders/LLCA3D.vert"
 ;
 const GLchar* LLCA3Dfrag =
-#include "src/Shaders/LLCA3D.frag"
+#include "../Shaders/LLCA3D.frag"
 ;
 
 LLCA3DRenderer::LLCA3DRenderer(Window& window, GLuint& texture) :

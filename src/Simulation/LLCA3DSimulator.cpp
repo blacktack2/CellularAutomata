@@ -1,6 +1,6 @@
 #include "LLCA3DSimulator.h"
 
-#include "src/Rendering/GLUtils.h"
+#include "../Rendering/GLUtils.h"
 
 const GLchar* LLCA3Dcomp =
 #include "../Shaders/LLCA3D.comp"

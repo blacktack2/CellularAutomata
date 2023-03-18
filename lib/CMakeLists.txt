@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.17)
+project(lib)
+
+message("Loading glad")
+add_subdirectory(glad/)
+message("Loading glm")
+add_subdirectory(glm/)
+message("Loading imgui")
+add_subdirectory(imgui/)
+message("Loading stb")
+add_subdirectory(stb/)

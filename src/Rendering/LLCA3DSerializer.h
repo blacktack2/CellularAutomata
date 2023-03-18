@@ -1,7 +1,7 @@
 #pragma once
-#include "src/Window/Serializer.h"
+#include "../Window/Serializer.h"
 #include "LLCA3DRenderer.h"
-#include "src/Simulation/LLCA3DSimulator.h"
+#include "../Simulation/LLCA3DSimulator.h"
 
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>

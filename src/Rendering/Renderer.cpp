@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-#include "src/Window/Window.h"
+#include "../Window/Window.h"
 
 Renderer::Renderer(Window& window, Simulator& simulator, GLuint& texture) :
 mWindow(window), mSimulator(simulator), mTexture(texture) {

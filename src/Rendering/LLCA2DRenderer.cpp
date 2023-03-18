@@ -1,16 +1,16 @@
 #include "LLCA2DRenderer.h"
 
 #include "IconAtlasHandler.h"
-#include "src/Window/Window.h"
+#include "../Window/Window.h"
 
 #include <cmath>
 #include <string>
 
 const GLchar* LLCA2Dvert =
-#include "src/Shaders/texQuad.vert"
+#include "../Shaders/texQuad.vert"
 ;
 const GLchar* LLCA2Dfrag =
-#include "src/Shaders/LLCA2D.frag"
+#include "../Shaders/LLCA2D.frag"
 ;
 
 LLCA2DRenderer::LLCA2DRenderer(Window& window, GLuint& texture) :
