@@ -275,16 +275,70 @@
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/imgui/imstb_truetype.h">
 			<Option target="imgui"/>
 		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/GLUtils.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/GLutils.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/IconAtlasHandler.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/IconAtlasHandler.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/ImageLoader.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/ImageLoader.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA2DRenderer.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA2DRenderer.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA2DSerializer.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA2DSerializer.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA3DRenderer.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA3DRenderer.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA3DSerializer.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/LLCA3DSerializer.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/Mesh.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/Mesh.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/Renderer.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/Renderer.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/Shader.cpp">
+			<Option target="CellularAutomata"/>
+		</Unit>
+		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Rendering/Shader.h">
+			<Option target="CellularAutomata"/>
+		</Unit>
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/ComputeShader.cpp">
 			<Option target="CellularAutomata"/>
 		</Unit>
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/ComputeShader.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/GLUtils.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/GLutils.cpp">
 			<Option target="CellularAutomata"/>
 		</Unit>
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/LLCA2DSimulator.cpp">
@@ -299,67 +353,13 @@
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/LLCA3DSimulator.h">
 			<Option target="CellularAutomata"/>
 		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/Mesh.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/Mesh.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Simulation/Simulator.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/IconAtlasHandler.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/IconAtlasHandler.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/ImageLoader.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/ImageLoader.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA2DRenderer.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA2DRenderer.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA2DSerializer.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA2DSerializer.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA3DRenderer.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA3DRenderer.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA3DSerializer.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/LLCA3DSerializer.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/Renderer.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/Renderer.h">
 			<Option target="CellularAutomata"/>
 		</Unit>
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/Serializer.cpp">
 			<Option target="CellularAutomata"/>
 		</Unit>
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/Serializer.h">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/Shader.cpp">
-			<Option target="CellularAutomata"/>
-		</Unit>
-		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/Shader.h">
 			<Option target="CellularAutomata"/>
 		</Unit>
 		<Unit filename="/home/blacktack2/Documents/Rep/CellularAutomata/src/Window/Timer.cpp">

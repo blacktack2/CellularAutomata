@@ -1,6 +1,6 @@
 #pragma once
 #include "Serializer.h"
-#include "Renderer.h"
+#include "src/Rendering/Renderer.h"
 
 #include "imgui/imgui.h"
 

@@ -1,13 +1,13 @@
 #include "Window.h"
 
-#include "IconAtlasHandler.h"
-#include "ImageLoader.h"
-#include "LLCA2DSerializer.h"
-#include "LLCA2DRenderer.h"
-#include "LLCA3DSerializer.h"
-#include "LLCA3DRenderer.h"
+#include "src/Rendering/IconAtlasHandler.h"
+#include "src/Rendering/ImageLoader.h"
+#include "src/Rendering/LLCA2DSerializer.h"
+#include "src/Rendering/LLCA2DRenderer.h"
+#include "src/Rendering/LLCA3DSerializer.h"
+#include "src/Rendering/LLCA3DRenderer.h"
 #include "Timer.h"
-#include "../Simulation/GLUtils.h"
+#include "src/Rendering/GLUtils.h"
 
 #include "glad/glad.h"
 
